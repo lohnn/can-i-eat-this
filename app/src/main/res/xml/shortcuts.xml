@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="scan"
+        android:enabled="true"
+        android:icon="@drawable/barcode_scan"
+        android:shortcutShortLabel="@string/shorcut_scan_label"
+        android:shortcutLongLabel="@string/shorcut_scan_label_long"
+        android:shortcutDisabledMessage="@string/shorcut_scan_disabled_message"
+        tools:targetApi="n_mr1">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="se.lohnn.canieatthis"
+            android:targetClass="se.lohnn.canieatthis.ScanActivity" />
+    </shortcut>
+    <!-- Specify more shortcuts here. -->
+</shortcuts>
