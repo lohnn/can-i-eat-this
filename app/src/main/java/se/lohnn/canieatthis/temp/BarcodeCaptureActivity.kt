@@ -87,8 +87,6 @@ class BarcodeCaptureActivity : AppCompatActivity() {
 
         gestureDetector = GestureDetector(this, CaptureGestureListener())
         scaleGestureDetector = ScaleGestureDetector(this, ScaleListener())
-
-        Snackbar.make(mGraphicOverlay, "Tap to capture. Pinch/Stretch to zoom", Snackbar.LENGTH_LONG).show()
     }
 
     /**
