@@ -5,7 +5,7 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import se.lohnn.canieatthis.databinding.ActivityMainBinding
-import se.lohnn.canieatthis.temp.BarcodeCaptureActivity
+import se.lohnn.canieatthis.temp.ScanActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,9 +15,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onClick() {
-        val scanIntent = Intent(this, BarcodeCaptureActivity::class.java)
-        scanIntent.putExtra(BarcodeCaptureActivity.AutoFocus, true)
-        scanIntent.putExtra(BarcodeCaptureActivity.UseFlash, false)
+        val scanIntent = Intent(this, ScanActivity::class.java)
+        scanIntent.putExtra(ScanActivity.AutoFocus, true)
+        scanIntent.putExtra(ScanActivity.UseFlash, false)
         startActivity(scanIntent)
     }
 }

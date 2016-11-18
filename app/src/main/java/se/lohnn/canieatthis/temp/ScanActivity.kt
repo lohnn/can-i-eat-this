@@ -52,7 +52,7 @@ import java.io.IOException
  * rear facing camera. During detection overlay graphics are drawn to indicate the position,
  * size, and ID of each barcode.
  */
-class BarcodeCaptureActivity : AppCompatActivity() {
+class ScanActivity : AppCompatActivity() {
 
     private var mCameraSource: CameraSource? = null
     private lateinit var mPreview: CameraSourcePreview
@@ -70,9 +70,9 @@ class BarcodeCaptureActivity : AppCompatActivity() {
         val binding: ActivityScanBinding = DataBindingUtil.setContentView(this, R.layout.activity_scan)
         binding.appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             if (Math.abs(verticalOffset) - binding.appBar.totalScrollRange == 0) {
-                Log.d(BarcodeCaptureActivity::class.java.simpleName, "Collapsed")
+                Log.d(ScanActivity::class.java.simpleName, "Collapsed")
             } else {
-                Log.d(BarcodeCaptureActivity::class.java.simpleName, "Expanded")
+                Log.d(ScanActivity::class.java.simpleName, "Expanded")
             }
         }
 
