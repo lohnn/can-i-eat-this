@@ -31,6 +31,7 @@ dependencies {
     })
 
     // Kotlin
+//    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     kapt "com.android.databinding:compiler:$android_plugin_version"
 
