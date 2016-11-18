@@ -68,6 +68,13 @@ class BarcodeCaptureActivity : AppCompatActivity() {
     public override fun onCreate(icicle: Bundle?) {
         super.onCreate(icicle)
         val binding: ActivityScanBinding = DataBindingUtil.setContentView(this, R.layout.activity_scan)
+        binding.appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+            if (Math.abs(verticalOffset) - binding.appBar.totalScrollRange == 0) {
+                Log.d(BarcodeCaptureActivity::class.java.simpleName, "Collapsed")
+            } else {
+                Log.d(BarcodeCaptureActivity::class.java.simpleName, "Expanded")
+            }
+        }
 
         mPreview = binding.preview
         mGraphicOverlay = binding.graphicOverlay as GraphicOverlay<BarcodeGraphic>
