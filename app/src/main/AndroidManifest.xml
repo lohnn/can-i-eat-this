@@ -20,7 +20,7 @@
                 android:resource="@xml/shortcuts" />
         </activity>
         <activity
-            android:name=".ScanActivity"
+            android:name=".temp.BarcodeCaptureActivity"
             android:label="@string/title_activity_scan"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">

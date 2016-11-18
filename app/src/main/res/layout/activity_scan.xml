@@ -38,6 +38,18 @@
                     app:layout_collapseMode="pin"
                     app:popupTheme="@style/AppTheme.PopupOverlay" />
 
+                <se.lohnn.canieatthis.camera.CameraSourcePreview
+                    android:id="@+id/preview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <se.lohnn.canieatthis.camera.GraphicOverlay
+                        android:id="@+id/graphicOverlay"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </se.lohnn.canieatthis.camera.CameraSourcePreview>
+
                 <TextureView
                     android:id="@+id/cameraTexture"
                     android:layout_width="match_parent"
