@@ -91,10 +91,8 @@ class ScanActivity : AppCompatActivity() {
         binding.appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             if (Math.abs(verticalOffset) - binding.appBar.totalScrollRange == 0) {
                 mPreview.stop()
-                binding.preview.visibility = View.GONE
             } else {
                 startCameraSource()
-                binding.preview.visibility = View.VISIBLE
             }
         }
     }

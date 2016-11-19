@@ -31,24 +31,24 @@
                 app:contentScrim="?attr/colorPrimary"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
+                <se.lohnn.canieatthis.camera.CameraSourcePreview
+                    android:id="@+id/preview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_collapseMode="parallax">
+
+                    <se.lohnn.canieatthis.camera.GraphicOverlay
+                        android:id="@+id/graphicOverlay"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </se.lohnn.canieatthis.camera.CameraSourcePreview>
+
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:layout_collapseMode="pin"
                     app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-                <se.lohnn.canieatthis.camera.CameraSourcePreview
-                    android:id="@+id/preview"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <se.lohnn.canieatthis.camera.GraphicOverlay
-                        android:id="@+id/graphicOverlay"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-
-                </se.lohnn.canieatthis.camera.CameraSourcePreview>
 
                 <TextureView
                     android:id="@+id/cameraTexture"
