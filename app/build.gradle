@@ -31,8 +31,9 @@ dependencies {
     })
 
     // Kotlin
-//    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+//    compile "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile 'co.metalab.asyncawait:asyncawait:0.7'
     kapt "com.android.databinding:compiler:$android_plugin_version"
 
     compile 'com.android.support:appcompat-v7:25.0.1'

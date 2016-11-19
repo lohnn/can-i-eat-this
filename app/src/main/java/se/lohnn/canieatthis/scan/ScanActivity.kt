@@ -34,6 +34,7 @@ import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
 import android.widget.Toast
+import co.metalab.asyncawait.async
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.api.CommonStatusCodes
@@ -89,9 +90,9 @@ class ScanActivity : AppCompatActivity() {
 
         binding.appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             if (Math.abs(verticalOffset) - binding.appBar.totalScrollRange == 0) {
-                mPreview.stop()
+                async { await { mPreview.stop() } }
             } else {
-                startCameraSource()
+                async { await { startCameraSource() } }
             }
         }
     }
@@ -217,6 +218,7 @@ class ScanActivity : AppCompatActivity() {
      */
     override fun onDestroy() {
         super.onDestroy()
+        async.cancelAll()
         mPreview.release()
     }
 
