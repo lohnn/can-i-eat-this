@@ -73,7 +73,7 @@ class ScanActivity : AppCompatActivity() {
         mGraphicOverlay = binding.graphicOverlay as GraphicOverlay<BarcodeGraphic>
 
         // read parameters from the intent used to launch the activity.
-        val autoFocus = intent.getBooleanExtra(AutoFocus, false)
+        val autoFocus = intent.getBooleanExtra(AutoFocus, true)
         val useFlash = intent.getBooleanExtra(UseFlash, false)
 
         // Check for the camera permission before accessing the camera.  If the

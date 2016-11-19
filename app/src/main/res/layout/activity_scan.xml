@@ -40,7 +40,7 @@
                     <se.lohnn.canieatthis.camera.GraphicOverlay
                         android:id="@+id/graphicOverlay"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="wrap_content" />
                 </se.lohnn.canieatthis.camera.CameraSourcePreview>
 
                 <android.support.v7.widget.Toolbar
@@ -49,11 +49,6 @@
                     android:layout_height="?attr/actionBarSize"
                     app:layout_collapseMode="pin"
                     app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-                <TextureView
-                    android:id="@+id/cameraTexture"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
 
             </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>
