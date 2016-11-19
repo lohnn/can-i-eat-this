@@ -84,6 +84,8 @@ class ScanActivity : AppCompatActivity() {
         } else {
             requestCameraPermission()
         }
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         gestureDetector = GestureDetector(this, CaptureGestureListener())
         scaleGestureDetector = ScaleGestureDetector(this, ScaleListener())
