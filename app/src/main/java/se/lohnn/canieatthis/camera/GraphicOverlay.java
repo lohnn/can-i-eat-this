@@ -181,7 +181,7 @@ public class GraphicOverlay<T extends GraphicOverlay.Graphic> extends View {
             int[] location = new int[2];
             this.getLocationOnScreen(location);
             for (T graphic : mGraphics) {
-                if (graphic.contains(rawX - location[0], rawY - location[1])) {
+                if (graphic.contains(rawX - location[0], rawY - location[1] / 2)) {
                     return graphic;
                 }
             }
@@ -230,7 +230,6 @@ public class GraphicOverlay<T extends GraphicOverlay.Graphic> extends View {
      * onTap returns the tapped barcode result to the calling Activity.
      *
      * @param rawX - the raw position of the tap
-     *             *
      * @param rawY - the raw position of the tap.
      */
     private void onTap(Float rawX, Float rawY) {
