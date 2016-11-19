@@ -17,7 +17,11 @@ package se.lohnn.canieatthis.camera;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.support.v4.view.GestureDetectorCompat;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.google.android.gms.vision.CameraSource;
@@ -29,11 +33,11 @@ import java.util.Set;
  * A view which renders a series of custom graphics to be overlaid on top of an associated preview
  * (i.e., the camera preview).  The creator can add graphics objects, update the objects, and remove
  * them, triggering the appropriate drawing and invalidation within the view.<p>
- *
+ * <p>
  * Supports scaling and mirroring of the graphics relative the camera's preview properties.  The
  * idea is that detection items are expressed in terms of a preview size, but need to be scaled up
  * to the full view size, and also mirrored in the case of the front-facing camera.<p>
- *
+ * <p>
  * Associated {@link Graphic} items should use the following methods to convert to view coordinates
  * for the graphics that are drawn:
  * <ol>
@@ -51,6 +55,13 @@ public class GraphicOverlay<T extends GraphicOverlay.Graphic> extends View {
     private float mHeightScaleFactor = 1.0f;
     private int mFacing = CameraSource.CAMERA_FACING_BACK;
     private Set<T> mGraphics = new HashSet<>();
+    private GraphicTapListener<T> tapListener;
+
+    GestureDetectorCompat gestureDetector;
+
+    public void setTapListener(GraphicTapListener<T> tapListener) {
+        this.tapListener = tapListener;
+    }
 
     /**
      * Base class for a custom graphics object to be rendered within the graphic overlay.  Subclass
@@ -125,6 +136,7 @@ public class GraphicOverlay<T extends GraphicOverlay.Graphic> extends View {
 
     public GraphicOverlay(Context context, AttributeSet attrs) {
         super(context, attrs);
+        gestureDetector = new GestureDetectorCompat(context, new GestureListener());
     }
 
     /**
@@ -160,6 +172,7 @@ public class GraphicOverlay<T extends GraphicOverlay.Graphic> extends View {
     /**
      * Returns the first graphic, if any, that exists at the provided absolute screen coordinates.
      * These coordinates will be offset by the relative screen position of this view.
+     *
      * @return First graphic containing the point, or null if no text is detected.
      */
     public T getGraphicAtLocation(float rawX, float rawY) {
@@ -206,5 +219,44 @@ public class GraphicOverlay<T extends GraphicOverlay.Graphic> extends View {
                 graphic.draw(canvas);
             }
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return gestureDetector.onTouchEvent(event);
+    }
+
+    /**
+     * onTap returns the tapped barcode result to the calling Activity.
+     *
+     * @param rawX - the raw position of the tap
+     *             *
+     * @param rawY - the raw position of the tap.
+     */
+    private void onTap(Float rawX, Float rawY) {
+        T barcodeGraphic = getGraphicAtLocation(rawX, rawY);
+        if (barcodeGraphic != null && tapListener != null) {
+            tapListener.onGraphicTapped(barcodeGraphic);
+        }
+    }
+
+    private class GestureListener extends GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return true;
+        }
+
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent e) {
+            float x = e.getX();
+            float y = e.getY();
+            Log.d("Tap", "Tapped at: (" + x + "," + y + ")");
+            onTap(x, y);
+            return true;
+        }
+    }
+
+    public interface GraphicTapListener<T extends Graphic> {
+        void onGraphicTapped(T graphic);
     }
 }
