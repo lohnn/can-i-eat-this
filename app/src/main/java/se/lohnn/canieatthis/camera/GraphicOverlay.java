@@ -23,12 +23,10 @@ import android.view.View;
 import com.google.android.gms.vision.CameraSource;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.Vector;
 
 /**
- * A view which renders a series of custom graphics to be overlayed on top of an associated preview
+ * A view which renders a series of custom graphics to be overlaid on top of an associated preview
  * (i.e., the camera preview).  The creator can add graphics objects, update the objects, and remove
  * them, triggering the appropriate drawing and invalidation within the view.<p>
  *
@@ -79,6 +77,11 @@ public class GraphicOverlay<T extends GraphicOverlay.Graphic> extends View {
          * @param canvas drawing canvas
          */
         public abstract void draw(Canvas canvas);
+
+        /**
+         * Returns true if the supplied coordinates are within this graphic.
+         */
+        public abstract boolean contains(float x, float y);
 
         /**
          * Adjusts a horizontal value of the supplied value from the preview scale to the view
@@ -155,27 +158,22 @@ public class GraphicOverlay<T extends GraphicOverlay.Graphic> extends View {
     }
 
     /**
-     * Returns a copy (as a list) of the set of all active graphics.
-     * @return list of all active graphics.
+     * Returns the first graphic, if any, that exists at the provided absolute screen coordinates.
+     * These coordinates will be offset by the relative screen position of this view.
+     * @return First graphic containing the point, or null if no text is detected.
      */
-    public List<T> getGraphics() {
+    public T getGraphicAtLocation(float rawX, float rawY) {
         synchronized (mLock) {
-            return new Vector(mGraphics);
+            // Get the position of this View so the raw location can be offset relative to the view.
+            int[] location = new int[2];
+            this.getLocationOnScreen(location);
+            for (T graphic : mGraphics) {
+                if (graphic.contains(rawX - location[0], rawY - location[1])) {
+                    return graphic;
+                }
+            }
+            return null;
         }
-    }
-
-    /**
-     * Returns the horizontal scale factor.
-     */
-    public float getWidthScaleFactor() {
-        return mWidthScaleFactor;
-    }
-
-    /**
-     * Returns the vertical scale factor.
-     */
-    public float getHeightScaleFactor() {
-        return mHeightScaleFactor;
     }
 
     /**

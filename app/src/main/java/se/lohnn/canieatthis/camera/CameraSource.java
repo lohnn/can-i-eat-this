@@ -92,23 +92,23 @@ public class CameraSource {
     private static final float ASPECT_RATIO_TOLERANCE = 0.01f;
 
     @StringDef({
-        Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE,
-        Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO,
-        Camera.Parameters.FOCUS_MODE_AUTO,
-        Camera.Parameters.FOCUS_MODE_EDOF,
-        Camera.Parameters.FOCUS_MODE_FIXED,
-        Camera.Parameters.FOCUS_MODE_INFINITY,
-        Camera.Parameters.FOCUS_MODE_MACRO
+            Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE,
+            Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO,
+            Camera.Parameters.FOCUS_MODE_AUTO,
+            Camera.Parameters.FOCUS_MODE_EDOF,
+            Camera.Parameters.FOCUS_MODE_FIXED,
+            Camera.Parameters.FOCUS_MODE_INFINITY,
+            Camera.Parameters.FOCUS_MODE_MACRO
     })
     @Retention(RetentionPolicy.SOURCE)
     private @interface FocusMode {}
 
     @StringDef({
-        Camera.Parameters.FLASH_MODE_ON,
-        Camera.Parameters.FLASH_MODE_OFF,
-        Camera.Parameters.FLASH_MODE_AUTO,
-        Camera.Parameters.FLASH_MODE_RED_EYE,
-        Camera.Parameters.FLASH_MODE_TORCH
+            Camera.Parameters.FLASH_MODE_ON,
+            Camera.Parameters.FLASH_MODE_OFF,
+            Camera.Parameters.FLASH_MODE_AUTO,
+            Camera.Parameters.FLASH_MODE_RED_EYE,
+            Camera.Parameters.FLASH_MODE_TORCH
     })
     @Retention(RetentionPolicy.SOURCE)
     private @interface FlashMode {}
@@ -416,9 +416,10 @@ public class CameraSource {
                 mCamera.setPreviewCallbackWithBuffer(null);
                 try {
                     // We want to be compatible back to Gingerbread, but SurfaceTexture
-                    // wasn't introduced until Honeycomb.  Since the interface cannot use a SurfaceTexture, if the
-                    // developer wants to display a preview we must use a SurfaceHolder.  If the developer doesn't
-                    // want to display a preview we use a SurfaceTexture if we are running at least Honeycomb.
+                    // wasn't introduced until Honeycomb.  Since the interface cannot use a
+                    // SurfaceTexture, if the developer wants to display a preview we must use a
+                    // SurfaceHolder.  If the developer doesn't want to display a preview we use a
+                    // SurfaceTexture if we are running at least Honeycomb.
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                         mCamera.setPreviewTexture(null);
@@ -507,8 +508,8 @@ public class CameraSource {
     /**
      * Gets the current focus mode setting.
      *
-     * @return current focus mode. This value is null if the camera is not yet created. Applications should call {@link
-     * #autoFocus(AutoFocusCallback)} to start the focus if focus
+     * @return current focus mode. This value is null if the camera is not yet created.
+     * Applications should call {@link #autoFocus(AutoFocusCallback)} to start the focus if focus
      * mode is FOCUS_MODE_AUTO or FOCUS_MODE_MACRO.
      * @see Camera.Parameters#FOCUS_MODE_AUTO
      * @see Camera.Parameters#FOCUS_MODE_INFINITY
@@ -590,7 +591,8 @@ public class CameraSource {
     /**
      * Starts camera auto-focus and registers a callback function to run when
      * the camera is focused.  This method is only valid when preview is active
-     * (between {@link #start()} or {@link #start(SurfaceHolder)} and before {@link #stop()} or {@link #release()}).
+     * (between {@link #start()} or {@link #start(SurfaceHolder)} and before {@link #stop()}
+     * or {@link #release()}).
      * <p/>
      * <p>Callers should check
      * {@link #getFocusMode()} to determine if
@@ -638,7 +640,8 @@ public class CameraSource {
      * Sets camera auto-focus move callback.
      *
      * @param cb the callback to run
-     * @return {@code true} if the operation is supported (i.e. from Jelly Bean), {@code false} otherwise
+     * @return {@code true} if the operation is supported (i.e. from Jelly Bean), {@code false}
+     * otherwise
      */
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public boolean setAutoFocusMoveCallback(@Nullable AutoFocusMoveCallback cb) {
@@ -777,7 +780,8 @@ public class CameraSource {
                     mFocusMode)) {
                 parameters.setFocusMode(mFocusMode);
             } else {
-                Log.i(TAG, "Camera focus mode: " + mFocusMode + " is not supported on this device.");
+                Log.i(TAG, "Camera focus mode: " + mFocusMode +
+                        " is not supported on this device.");
             }
         }
 
@@ -785,13 +789,12 @@ public class CameraSource {
         mFocusMode = parameters.getFocusMode();
 
         if (mFlashMode != null) {
-            if (parameters.getSupportedFlashModes() != null) {
-                if (parameters.getSupportedFlashModes().contains(
-                        mFlashMode)) {
-                    parameters.setFlashMode(mFlashMode);
-                } else {
-                    Log.i(TAG, "Camera flash mode: " + mFlashMode + " is not supported on this device.");
-                }
+            if (parameters.getSupportedFlashModes().contains(
+                    mFlashMode)) {
+                parameters.setFlashMode(mFlashMode);
+            } else {
+                Log.i(TAG, "Camera flash mode: " + mFlashMode +
+                        " is not supported on this device.");
             }
         }
 
@@ -876,8 +879,8 @@ public class CameraSource {
         private Size mPreview;
         private Size mPicture;
 
-        public SizePair(android.hardware.Camera.Size previewSize,
-                        android.hardware.Camera.Size pictureSize) {
+        public SizePair(Camera.Size previewSize,
+                        Camera.Size pictureSize) {
             mPreview = new Size(previewSize.width, previewSize.height);
             if (pictureSize != null) {
                 mPicture = new Size(pictureSize.width, pictureSize.height);
@@ -910,13 +913,13 @@ public class CameraSource {
         List<Camera.Size> supportedPictureSizes =
                 parameters.getSupportedPictureSizes();
         List<SizePair> validPreviewSizes = new ArrayList<>();
-        for (android.hardware.Camera.Size previewSize : supportedPreviewSizes) {
+        for (Camera.Size previewSize : supportedPreviewSizes) {
             float previewAspectRatio = (float) previewSize.width / (float) previewSize.height;
 
             // By looping through the picture sizes in order, we favor the higher resolutions.
             // We choose the highest resolution in order to support taking the full resolution
             // picture later.
-            for (android.hardware.Camera.Size pictureSize : supportedPictureSizes) {
+            for (Camera.Size pictureSize : supportedPictureSizes) {
                 float pictureAspectRatio = (float) pictureSize.width / (float) pictureSize.height;
                 if (Math.abs(previewAspectRatio - pictureAspectRatio) < ASPECT_RATIO_TOLERANCE) {
                     validPreviewSizes.add(new SizePair(previewSize, pictureSize));
@@ -930,7 +933,7 @@ public class CameraSource {
         // still account for it.
         if (validPreviewSizes.size() == 0) {
             Log.w(TAG, "No preview sizes have a corresponding same-aspect-ratio picture size");
-            for (android.hardware.Camera.Size previewSize : supportedPreviewSizes) {
+            for (Camera.Size previewSize : supportedPreviewSizes) {
                 // The null picture size will let us know that we shouldn't set a picture size.
                 validPreviewSizes.add(new SizePair(previewSize, null));
             }
@@ -1006,9 +1009,9 @@ public class CameraSource {
 
         int angle;
         int displayAngle;
-        if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+        if (cameraInfo.facing == CameraInfo.CAMERA_FACING_FRONT) {
             angle = (cameraInfo.orientation + degrees) % 360;
-            displayAngle = (360 - angle) % 360; // compensate for it being mirrored
+            displayAngle = (360 - angle); // compensate for it being mirrored
         } else {  // back-facing
             angle = (cameraInfo.orientation - degrees + 360) % 360;
             displayAngle = angle;
@@ -1126,8 +1129,8 @@ public class CameraSource {
 
                 if (!mBytesToByteBuffer.containsKey(data)) {
                     Log.d(TAG,
-                        "Skipping frame.  Could not find ByteBuffer associated with the image " +
-                        "data from the camera.");
+                            "Skipping frame.  Could not find ByteBuffer associated with the image " +
+                                    "data from the camera.");
                     return;
                 }
 

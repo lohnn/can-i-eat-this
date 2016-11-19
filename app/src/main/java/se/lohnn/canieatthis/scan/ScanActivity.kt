@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package se.lohnn.canieatthis.temp
+package se.lohnn.canieatthis.scan
 
 import android.Manifest
 import android.app.AlertDialog
@@ -38,7 +38,6 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.vision.MultiProcessor
-import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
 import se.lohnn.canieatthis.R
 import se.lohnn.canieatthis.camera.CameraSource
@@ -152,8 +151,7 @@ class ScanActivity : AppCompatActivity() {
         // create a separate tracker instance for each barcode.
         val barcodeDetector = BarcodeDetector.Builder(context).build()
         val barcodeFactory = BarcodeTrackerFactory(mGraphicOverlay)
-        barcodeDetector.setProcessor(
-                MultiProcessor.Builder(barcodeFactory).build())
+        barcodeDetector.setProcessor(MultiProcessor.Builder(barcodeFactory).build())
 
         if (!barcodeDetector.isOperational) {
             // Note: The first time that an app using the barcode or face API is installed on a
@@ -310,34 +308,11 @@ class ScanActivity : AppCompatActivity() {
      * @return true if the activity is ending.
      */
     private fun onTap(rawX: Float, rawY: Float): Boolean {
-        // Find tap point in preview frame coordinates.
-        val location = IntArray(2)
-        mGraphicOverlay.getLocationOnScreen(location)
-        val x = (rawX - location[0]) / mGraphicOverlay.widthScaleFactor
-        val y = (rawY - location[1]) / mGraphicOverlay.heightScaleFactor
+        val barcodeGraphic = mGraphicOverlay.getGraphicAtLocation(rawX, rawY)
 
-        // Find the barcode whose center is closest to the tapped point.
-        var best: Barcode? = null
-        var bestDistance = java.lang.Float.MAX_VALUE
-        for (graphic in mGraphicOverlay.graphics) {
-            val barcode = graphic.barcode
-            if (barcode.boundingBox.contains(x.toInt(), y.toInt())) {
-                // Exact hit, no need to keep looking.
-                best = barcode
-                break
-            }
-            val dx = x - barcode.boundingBox.centerX()
-            val dy = y - barcode.boundingBox.centerY()
-            val distance = dx * dx + dy * dy  // actually squared distance
-            if (distance < bestDistance) {
-                best = barcode
-                bestDistance = distance
-            }
-        }
-
-        if (best != null) {
+        if (barcodeGraphic != null && barcodeGraphic.barcode != null) {
             val data = Intent()
-            data.putExtra(BarcodeObject, best)
+            data.putExtra(BarcodeObject, barcodeGraphic.barcode)
             setResult(CommonStatusCodes.SUCCESS, data)
             finish()
             return true

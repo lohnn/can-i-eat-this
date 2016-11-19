@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="se.lohnn.canieatthis.ScanActivity"
+    tools:context="se.lohnn.canieatthis.scan.ScanActivity"
     tools:showIn="@layout/activity_scan">
 
     <TextView

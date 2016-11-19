@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package se.lohnn.canieatthis.temp;
+package se.lohnn.canieatthis.scan;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -101,5 +101,10 @@ public class BarcodeGraphic extends GraphicOverlay.Graphic {
 
         // Draws a label at the bottom of the barcode indicate the barcode value that was detected.
         canvas.drawText(barcode.rawValue, rect.left, rect.bottom, mTextPaint);
+    }
+
+    @Override
+    public boolean contains(float x, float y) {
+        return mBarcode.getBoundingBox().contains((int) x, (int) y);
     }
 }
