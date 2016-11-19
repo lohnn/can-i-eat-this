@@ -68,13 +68,6 @@ class ScanActivity : AppCompatActivity() {
     public override fun onCreate(icicle: Bundle?) {
         super.onCreate(icicle)
         val binding: ActivityScanBinding = DataBindingUtil.setContentView(this, R.layout.activity_scan)
-        binding.appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
-            if (Math.abs(verticalOffset) - binding.appBar.totalScrollRange == 0) {
-                Log.d(ScanActivity::class.java.simpleName, "Collapsed")
-            } else {
-                Log.d(ScanActivity::class.java.simpleName, "Expanded")
-            }
-        }
 
         mPreview = binding.preview
         mGraphicOverlay = binding.graphicOverlay as GraphicOverlay<BarcodeGraphic>
@@ -94,6 +87,16 @@ class ScanActivity : AppCompatActivity() {
 
         gestureDetector = GestureDetector(this, CaptureGestureListener())
         scaleGestureDetector = ScaleGestureDetector(this, ScaleListener())
+
+        binding.appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+            if (Math.abs(verticalOffset) - binding.appBar.totalScrollRange == 0) {
+                mPreview.stop()
+                binding.preview.visibility = View.GONE
+            } else {
+                startCameraSource()
+                binding.preview.visibility = View.VISIBLE
+            }
+        }
     }
 
     /**
