@@ -53,7 +53,6 @@ class ScanActivity : AppCompatActivity() {
         cameraPreview = binding.preview
         graphicOverlay = binding.graphicOverlay as GraphicOverlay<BarcodeGraphic>
 
-//        TODO("Tap currently has an offset, needs fixing")
         graphicOverlay.setTapListener { barcodeGraphic ->
             if (barcodeGraphic.barcode != null) {
                 Log.d(ScanActivity::class.java.simpleName, "Clicked barcode (${barcodeGraphic.barcode})")

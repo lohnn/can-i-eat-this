@@ -181,6 +181,7 @@ public class GraphicOverlay<T extends GraphicOverlay.Graphic> extends View {
             int[] location = new int[2];
             this.getLocationOnScreen(location);
             for (T graphic : mGraphics) {
+                //TODO: Look for a better fix for getting correct location of tap
                 if (graphic.contains(rawX - location[0], rawY - location[1] / 2)) {
                     return graphic;
                 }
