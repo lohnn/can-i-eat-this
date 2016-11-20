@@ -33,5 +33,4 @@
                 android:value="se.lohnn.canieatthis.MainActivity" />
         </activity>
     </application>
-
 </manifest>

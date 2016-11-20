@@ -6,19 +6,19 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.hardware.Camera
 import android.os.Build
-import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.widget.Toast
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.vision.MultiProcessor
 import com.google.android.gms.vision.barcode.BarcodeDetector
-import com.maxcruz.reactivePermissions.ReactivePermissions
-import com.maxcruz.reactivePermissions.entity.Permission
+import io.reactivex.observers.DisposableObserver
 import se.lohnn.canieatthis.R
 import se.lohnn.canieatthis.camera.CameraSource
 import se.lohnn.canieatthis.camera.CameraSourcePreview
 import se.lohnn.canieatthis.camera.GraphicOverlay
+import se.lohnn.canieatthis.permissions.Permission
+import se.lohnn.canieatthis.permissions.PermissionManager
 import java.io.IOException
 
 class CameraManager(val activity: Activity,
@@ -32,36 +32,38 @@ class CameraManager(val activity: Activity,
 
         // permission request codes need to be < 256
         private val RC_HANDLE_CAMERA_PERM = 2
+
+        private val permissions = listOf(Permission(Manifest.permission.CAMERA,
+                R.string.rationale_permission_title,
+                true))
     }
 
+    val permissionManager = PermissionManager(activity, RC_HANDLE_CAMERA_PERM)
+
     private var cameraSource: CameraSource? = null
-    val cameraPermission: List<Permission>
-    val reactive: ReactivePermissions
 
     init {
-        cameraPermission = listOf(Permission(Manifest.permission.CAMERA,
-                R.string.permission_camera_rationale,
-                true))
-        reactive = ReactivePermissions(activity, RC_HANDLE_CAMERA_PERM)
-        reactive.observeResultPermissions().subscribe({ event ->
-            if (event.second) {
-                createCameraSource(true, false)
-                startCamera()
-            } else {
-                AlertDialog.Builder(activity)
-                        .setMessage(R.string.no_camera_permission)
-                        .setPositiveButton(R.string.ok, { dialog, id -> })
-                        .show()
+        permissionManager.observeResultPermissions().subscribe(object : DisposableObserver<Pair<String, Boolean>>() {
+            override fun onNext(event: Pair<String, Boolean>) {
+                if (event.first == Manifest.permission.CAMERA && event.second) {
+                    createCameraSource(true, false)
+                    startCamera()
+                }
             }
-        }, { throwable ->
-            Log.e(TAG, "Darn it, something went wrong with trying to get permissions", throwable)
+
+            override fun onError(e: Throwable?) {
+                dispose()
+            }
+
+            override fun onComplete() {
+                dispose()
+            }
         })
-        reactive.evaluate(cameraPermission)
+        permissionManager.evaluate(permissions)
     }
 
     fun startCamera() {
         startCameraSource()
-//        TODO("How do we want to handle denial of camera permissions")
     }
 
     /**
@@ -146,12 +148,6 @@ class CameraManager(val activity: Activity,
                 cameraSource = null
             }
 
-        }
-    }
-
-    fun permissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        if (requestCode == RC_HANDLE_CAMERA_PERM) {
-            reactive.receive(permissions, grantResults)
         }
     }
 

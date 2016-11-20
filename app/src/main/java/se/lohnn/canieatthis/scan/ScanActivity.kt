@@ -53,6 +53,7 @@ class ScanActivity : AppCompatActivity() {
         cameraPreview = binding.preview
         graphicOverlay = binding.graphicOverlay as GraphicOverlay<BarcodeGraphic>
 
+
         graphicOverlay.setTapListener { barcodeGraphic ->
             if (barcodeGraphic.barcode != null) {
                 Log.d(ScanActivity::class.java.simpleName, "Clicked barcode (${barcodeGraphic.barcode})")
@@ -106,9 +107,5 @@ class ScanActivity : AppCompatActivity() {
         super.onDestroy()
         async.cancelAll()
         cameraPreview.release()
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        cameraManager.permissionsResult(requestCode, permissions, grantResults)
     }
 }
