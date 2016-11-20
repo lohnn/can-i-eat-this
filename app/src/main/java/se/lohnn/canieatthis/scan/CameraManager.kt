@@ -1,20 +1,16 @@
 package se.lohnn.canieatthis.scan
 
-import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.IntentFilter
 import android.hardware.Camera
 import android.os.Build
-import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.widget.Toast
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.vision.MultiProcessor
 import com.google.android.gms.vision.barcode.BarcodeDetector
-import com.maxcruz.reactivePermissions.ReactivePermissions
-import com.maxcruz.reactivePermissions.entity.Permission
 import se.lohnn.canieatthis.R
 import se.lohnn.canieatthis.camera.CameraSource
 import se.lohnn.canieatthis.camera.CameraSourcePreview
@@ -35,28 +31,11 @@ class CameraManager(val activity: Activity,
     }
 
     private var cameraSource: CameraSource? = null
-    val cameraPermission: List<Permission>
-    val reactive: ReactivePermissions
 
     init {
-        cameraPermission = listOf(Permission(Manifest.permission.CAMERA,
-                R.string.permission_camera_rationale,
-                true))
-        reactive = ReactivePermissions(activity, RC_HANDLE_CAMERA_PERM)
-        reactive.observeResultPermissions().subscribe({ event ->
-            if (event.second) {
-                createCameraSource(true, false)
-                startCamera()
-            } else {
-                AlertDialog.Builder(activity)
-                        .setMessage(R.string.no_camera_permission)
-                        .setPositiveButton(R.string.ok, { dialog, id -> })
-                        .show()
-            }
-        }, { throwable ->
-            Log.e(TAG, "Darn it, something went wrong with trying to get permissions", throwable)
-        })
-        reactive.evaluate(cameraPermission)
+        //TODO("We REALLY need to check for permissions")
+        createCameraSource(true, false)
+        startCamera()
     }
 
     fun startCamera() {
@@ -146,12 +125,6 @@ class CameraManager(val activity: Activity,
                 cameraSource = null
             }
 
-        }
-    }
-
-    fun permissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        if (requestCode == RC_HANDLE_CAMERA_PERM) {
-            reactive.receive(permissions, grantResults)
         }
     }
 
