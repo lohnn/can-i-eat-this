@@ -250,7 +250,6 @@ public class GraphicOverlay<T extends GraphicOverlay.Graphic> extends View {
         public boolean onSingleTapConfirmed(MotionEvent e) {
             float x = e.getX();
             float y = e.getY();
-            Log.d("Tap", "Tapped at: (" + x + "," + y + ")");
             onTap(x, y);
             return true;
         }
