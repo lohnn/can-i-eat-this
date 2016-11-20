@@ -49,7 +49,6 @@ class ScanActivity : AppCompatActivity() {
     public override fun onCreate(icicle: Bundle?) {
         super.onCreate(icicle)
         val binding: ActivityScanBinding = DataBindingUtil.setContentView(this, R.layout.activity_scan)
-
         cameraPreview = binding.preview
         graphicOverlay = binding.graphicOverlay as GraphicOverlay<BarcodeGraphic>
 
@@ -75,7 +74,6 @@ class ScanActivity : AppCompatActivity() {
         val useFlash = intent.getBooleanExtra(UseFlash, false)
 
         cameraManager = CameraManager(this, graphicOverlay, cameraPreview)
-        cameraManager.startCamera()
     }
 
     private fun setupActionBar(toolbar: Toolbar) {
@@ -96,7 +94,7 @@ class ScanActivity : AppCompatActivity() {
      */
     override fun onPause() {
         super.onPause()
-        cameraManager.stopCamera()
+        async { await { cameraManager.stopCamera() } }
     }
 
     /**
@@ -106,6 +104,7 @@ class ScanActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         async.cancelAll()
+        async { await { cameraManager.stopCamera() } }
         cameraPreview.release()
     }
 }
