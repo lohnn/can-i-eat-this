@@ -107,4 +107,8 @@ class ScanActivity : AppCompatActivity() {
         async { await { cameraManager.stopCamera() } }
         cameraPreview.release()
     }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        cameraManager.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
 }

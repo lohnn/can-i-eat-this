@@ -151,6 +151,12 @@ class CameraManager(val activity: Activity,
         }
     }
 
+    fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        if (requestCode == RC_HANDLE_CAMERA_PERM) {
+            permissionManager.receive(permissions, grantResults)
+        }
+    }
+
     fun stopCamera() {
         cameraPreview.stop()
     }
