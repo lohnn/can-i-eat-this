@@ -3,12 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-        <variable
-            name="clickListener"
-            type="se.lohnn.canieatthis.MainActivity" />
-    </data>
+    <data />
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -54,7 +49,15 @@
             </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>
 
-        <include layout="@layout/content_scan" />
+        <android.support.v4.widget.NestedScrollView xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <include
+                android:id="@+id/productOverview"
+                layout="@layout/content_scan" />
+        </android.support.v4.widget.NestedScrollView>
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>
