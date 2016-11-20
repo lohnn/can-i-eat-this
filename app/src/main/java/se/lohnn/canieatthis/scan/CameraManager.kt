@@ -1,5 +1,6 @@
 package se.lohnn.canieatthis.scan
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.IntentFilter
@@ -11,10 +12,13 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.vision.MultiProcessor
 import com.google.android.gms.vision.barcode.BarcodeDetector
+import io.reactivex.observers.DisposableObserver
 import se.lohnn.canieatthis.R
 import se.lohnn.canieatthis.camera.CameraSource
 import se.lohnn.canieatthis.camera.CameraSourcePreview
 import se.lohnn.canieatthis.camera.GraphicOverlay
+import se.lohnn.canieatthis.permissions.Permission
+import se.lohnn.canieatthis.permissions.PermissionManager
 import java.io.IOException
 
 class CameraManager(val activity: Activity,
@@ -28,19 +32,38 @@ class CameraManager(val activity: Activity,
 
         // permission request codes need to be < 256
         private val RC_HANDLE_CAMERA_PERM = 2
+
+        private val permissions = listOf(Permission(Manifest.permission.CAMERA,
+                R.string.rationale_permission_title,
+                true))
     }
+
+    val permissionManager = PermissionManager(activity, RC_HANDLE_CAMERA_PERM)
 
     private var cameraSource: CameraSource? = null
 
     init {
-        //TODO("We REALLY need to check for permissions")
-        createCameraSource(true, false)
-        startCamera()
+        permissionManager.observeResultPermissions().subscribe(object : DisposableObserver<Pair<String, Boolean>>() {
+            override fun onNext(event: Pair<String, Boolean>) {
+                if (event.first == Manifest.permission.CAMERA && event.second) {
+                    createCameraSource(true, false)
+                    startCamera()
+                }
+            }
+
+            override fun onError(e: Throwable?) {
+                dispose()
+            }
+
+            override fun onComplete() {
+                dispose()
+            }
+        })
+        permissionManager.evaluate(permissions)
     }
 
     fun startCamera() {
         startCameraSource()
-//        TODO("How do we want to handle denial of camera permissions")
     }
 
     /**

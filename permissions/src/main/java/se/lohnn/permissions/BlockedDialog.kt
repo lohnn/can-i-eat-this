@@ -1,5 +1,4 @@
-package se.lohnn.canieatthis.permissions
-
+package se.lohnn.permissions
 
 import android.app.DialogFragment
 import android.content.Intent
@@ -12,10 +11,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import com.maxcruz.reactivePermissions.R
 import io.reactivex.subjects.PublishSubject
-import kotlinx.android.synthetic.main.explain_permissions.*
-import kotlinx.android.synthetic.main.permission_description.*
+import se.lohnn.permissions.databinding.ExplainPermissionsBinding
 
 /**
  * Dialog to explain that an essential permission is blocked
@@ -27,14 +24,14 @@ class BlockedDialog() : DialogFragment() {
     /**
      * Subject object to send the retry event
      */
-    val results: PublishSubject<String> = PublishSubject.create()
+    internal val results: PublishSubject<String> = PublishSubject.create()
     private var retryPermission: String? = null
+    private lateinit var binding: ExplainPermissionsBinding
 
     /**
      * Static stuff
      */
     companion object {
-
         private val BLOCKED_PERMISSION_PARAM: String = "blockedPermission"
         private val EXTERNAL_PARAM: String = "external"
 
@@ -65,7 +62,7 @@ class BlockedDialog() : DialogFragment() {
      */
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        val view = inflater!!.inflate(R.layout.explain_permissions, container, false)
+        binding = ExplainPermissionsBinding.inflate(inflater, container, false)
         return view
     }
 
@@ -95,16 +92,16 @@ class BlockedDialog() : DialogFragment() {
      */
     @Suppress("DEPRECATION")
     fun explainPermission(permission: String, permissionName: String, appName: String, external: Boolean) {
-        confirmButton.text = getString(R.string.explain_blocked_permission_close)
+        binding.confirmButton.text = getString(R.string.explain_blocked_permission_close)
         val baseMessage = getString(R.string.explain_blocked_permission_dialog)
         val message = String.format(baseMessage, "<b>$permissionName</b>", appName)
         val fadeIn = AnimationUtils.loadAnimation(activity, android.R.anim.fade_in)
-        permissionMessage.startAnimation(fadeIn)
-        permissionMessage.text = Html.fromHtml(message)
-        confirmButton.setOnClickListener {
+        binding.description.permissionMessage.startAnimation(fadeIn)
+        binding.description.permissionMessage.text = Html.fromHtml(message)
+        binding.confirmButton.setOnClickListener {
             activity.finish()
         }
-        retryButton.setOnClickListener {
+        binding.retryButton.setOnClickListener {
             if (external) {
                 val intent = Intent()
                 intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS

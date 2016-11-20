@@ -1,5 +1,4 @@
-package se.lohnn.canieatthis.permissions
-
+package se.lohnn.permissions
 
 import android.app.DialogFragment
 import android.content.pm.PackageManager
@@ -8,12 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
-import com.maxcruz.reactivePermissions.R
 import io.reactivex.subjects.PublishSubject
-import kotlinx.android.synthetic.main.explain_permissions.*
-import kotlinx.android.synthetic.main.permission_description.*
+import se.lohnn.canieatthis.permissions.Permission
+import se.lohnn.permissions.databinding.ExplainPermissionsBinding
+
 
 /**
  * Dialog to explain why an permission is required
@@ -25,7 +22,8 @@ class ExplainDialog() : DialogFragment() {
     /**
      * Subject object to send the button click event in the dialog
      */
-    val results: PublishSubject<Pair<String, Boolean>> = PublishSubject.create()
+    internal val results: PublishSubject<Pair<String, Boolean>> = PublishSubject.create()
+    private lateinit var binding: ExplainPermissionsBinding
 
     /**
      * Static stuff
@@ -43,14 +41,13 @@ class ExplainDialog() : DialogFragment() {
         fun newInstance(permission: Permission): ExplainDialog {
             val instance = ExplainDialog()
             val arguments = Bundle()
-            val mapper = jacksonObjectMapper()
-            val stringPermission = mapper.writeValueAsString(permission)
-            arguments.putString(PERMISSION_PARAM, stringPermission)
+            arguments.putSerializable(PERMISSION_PARAM, permission)
             instance.arguments = arguments
             instance.isCancelable = false
             return instance
         }
     }
+
 
     /**
      * Inflate the layout view and attach it to the fragment
@@ -62,6 +59,7 @@ class ExplainDialog() : DialogFragment() {
      */
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
+        binding = ExplainPermissionsBinding.inflate(inflater, container, false)
         val view = inflater!!.inflate(R.layout.explain_permissions, container, false)
         val fadeIn = AnimationUtils.loadAnimation(activity, android.R.anim.fade_in)
         view.startAnimation(fadeIn)
@@ -75,10 +73,7 @@ class ExplainDialog() : DialogFragment() {
      * @param savedInstanceState Bundle previous saved state as given here.
      */
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        val permissionString = arguments.getString(PERMISSION_PARAM)
-        val mapper = jacksonObjectMapper()
-        val permissionObject = mapper.readValue<Permission>(permissionString)
-        val (permission, resource, canContinue) = permissionObject
+        val (permission, resource, canContinue) = arguments.getSerializable(PERMISSION_PARAM) as Permission
         val (icon, name) = permissionInfo(permission)
         explainPermission(permission, resource, name, icon, canContinue)
     }
@@ -94,19 +89,19 @@ class ExplainDialog() : DialogFragment() {
      */
     fun explainPermission(permission: String, resource: Int?, name: String, icon: Int,
                           canContinue: Boolean) {
-        val listener = fun (value: Boolean) {
+        val listener = fun(value: Boolean) {
             results.onNext(Pair(permission, value))
             finish()
         }
-        permissionIcon.setImageResource(icon)
-        permissionTitle.text = name
-        if (resource != null) permissionMessage.text = getString(resource)
+        binding.description.permissionIcon.setImageResource(icon)
+        binding.description.permissionTitle.text = name
+        if (resource != null) binding.description.permissionMessage.text = getString(resource)
         if (canContinue) {
-            confirmButton.setOnClickListener { listener(false) }
+            binding.confirmButton.setOnClickListener { listener(false) }
         } else {
-            confirmButton.visibility = View.GONE
+            binding.confirmButton.visibility = View.GONE
         }
-        retryButton.setOnClickListener { listener(true) }
+        binding.retryButton.setOnClickListener { listener(true) }
     }
 
     /**
@@ -124,7 +119,7 @@ class ExplainDialog() : DialogFragment() {
      * @param permission String the constant name for the permission (get from system)
      * @return Pair<Int, String> the first is the icon resource and the second the label name
      */
-    private fun permissionInfo(permission: String) : Pair<Int, String> {
+    private fun permissionInfo(permission: String): Pair<Int, String> {
         val i = PackageManager.GET_META_DATA
         val permissionInfo = activity.packageManager.getPermissionInfo(permission, i)
         val groupInfo = activity.packageManager.getPermissionGroupInfo(permissionInfo.group, i)

@@ -32,8 +32,5 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="se.lohnn.canieatthis.MainActivity" />
         </activity>
-
-        <activity android:name=".rxpermissions.ShadowActivity" />
     </application>
-
 </manifest>

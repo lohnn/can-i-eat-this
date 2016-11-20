@@ -5,7 +5,10 @@ import android.content.pm.PackageManager
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import io.reactivex.Observable
+import io.reactivex.ObservableEmitter
 import org.reactivestreams.Subscriber
+import se.lohnn.permissions.BlockedDialog
+import se.lohnn.permissions.ExplainDialog
 
 /**
  * This class, manages the permissions request in Android M and sends the answers using an
@@ -21,18 +24,19 @@ import org.reactivestreams.Subscriber
  *
  *   @author Max Cruz
  */
-class ReactivePermissions(private val activity: Activity, private val requestCode: Int) {
+class PermissionManager(private val activity: Activity, private val requestCode: Int) {
 
     private val observable: Observable<Pair<String, Boolean>>
     private var stack: MutableList<Permission>? = null
-    private var subscriber: Subscriber<in Pair<String, Boolean>>? = null
+    private var subscriber: ObservableEmitter<in Pair<String, Boolean>>? = null
+
 
     /**
      * Class constructor that initializes the observable object for the results. When send the
      * answer to each permission in the stack, request the next one
      */
     init {
-        observable = observable<Pair<String, Boolean>> { subscriber = it }
+        observable = Observable.create { subscriber = it }
     }
 
     /**

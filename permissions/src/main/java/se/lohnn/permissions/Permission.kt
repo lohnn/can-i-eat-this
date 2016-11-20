@@ -1,5 +1,7 @@
 package se.lohnn.canieatthis.permissions
 
+import java.io.Serializable
+
 /**
  * Data class to describe an permission
  *
@@ -9,4 +11,4 @@ package se.lohnn.canieatthis.permissions
  *
  * @author Max Cruz
  */
-data class Permission(val permission: String, val explanationResource: Int?, val canContinue: Boolean)
+data class Permission(val permission: String, val explanationResource: Int?, val canContinue: Boolean) : Serializable
