@@ -26,6 +26,7 @@ import se.lohnn.canieatthis.camera.CameraSourcePreview
 import se.lohnn.canieatthis.camera.GraphicOverlay
 import se.lohnn.canieatthis.databinding.ActivityScanBinding
 import se.lohnn.canieatthis.product.Product
+import se.lohnn.canieatthis.product.temp.ProductFactory
 
 /**
  * Activity for the multi-tracker app.  This app detects barcodes and displays the value with the
@@ -75,9 +76,7 @@ class ScanActivity : AppCompatActivity() {
         val useFlash = intent.getBooleanExtra(UseFlash, false)
 
         cameraManager = CameraManager(this, graphicOverlay, cameraPreview)
-        binding.productOverview.product = Product("Oatly chokladdryck",
-                "A short description of my product",
-                "http://cdn3-www.dogtime.com/assets/uploads/gallery/30-impossibly-cute-puppies/impossibly-cute-puppy-15.jpg")
+        binding.productOverview.product = ProductFactory.getRandomizedProduct()
     }
 
     private fun setupActionBar(toolbar: Toolbar) {
