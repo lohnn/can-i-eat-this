@@ -22,4 +22,10 @@
         <item name="android:textSize">24sp</item>
         <item name="android:textColor">#de000000</item>
     </style>
+
+    <style name="BodyTextStyle">
+        <item name="android:typeface">sans</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#de000000</item>
+    </style>
 </resources>
