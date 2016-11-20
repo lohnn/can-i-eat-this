@@ -25,7 +25,6 @@ import se.lohnn.canieatthis.R
 import se.lohnn.canieatthis.camera.CameraSourcePreview
 import se.lohnn.canieatthis.camera.GraphicOverlay
 import se.lohnn.canieatthis.databinding.ActivityScanBinding
-import se.lohnn.canieatthis.product.Product
 import se.lohnn.canieatthis.product.temp.ProductFactory
 
 /**
@@ -76,6 +75,10 @@ class ScanActivity : AppCompatActivity() {
         val useFlash = intent.getBooleanExtra(UseFlash, false)
 
         cameraManager = CameraManager(this, graphicOverlay, cameraPreview)
+        //TODO: Filter and check if it was the last one seen
+        cameraManager.barcodeSubject.subscribe({ barcode ->
+            Log.d(ScanActivity::class.java.simpleName, "Barcode found: $barcode")
+        })
         binding.productOverview.product = ProductFactory.getRandomizedProduct()
     }
 

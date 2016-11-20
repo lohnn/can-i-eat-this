@@ -11,8 +11,10 @@ import android.widget.Toast
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.vision.MultiProcessor
+import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
 import io.reactivex.observers.DisposableObserver
+import io.reactivex.subjects.PublishSubject
 import se.lohnn.canieatthis.R
 import se.lohnn.canieatthis.camera.CameraSource
 import se.lohnn.canieatthis.camera.CameraSourcePreview
@@ -41,6 +43,9 @@ class CameraManager(val activity: Activity,
     val permissionManager = PermissionManager(activity, RC_HANDLE_CAMERA_PERM)
 
     private var cameraSource: CameraSource? = null
+
+    //TODO: Do we need to throw this away when done perhaps?
+    val barcodeSubject: PublishSubject<Barcode> = PublishSubject.create<Barcode>()
 
     init {
         permissionManager.observeResultPermissions().subscribe(object : DisposableObserver<Pair<String, Boolean>>() {
@@ -80,7 +85,7 @@ class CameraManager(val activity: Activity,
         // graphics for each barcode on screen.  The factory is used by the multi-processor to
         // create a separate tracker instance for each barcode.
         val barcodeDetector = BarcodeDetector.Builder(activity).build()
-        val barcodeFactory = BarcodeTrackerFactory(graphicOverlay)
+        val barcodeFactory = BarcodeTrackerFactory(graphicOverlay, barcodeSubject)
         barcodeDetector.setProcessor(MultiProcessor.Builder(barcodeFactory).build())
 
         if (!barcodeDetector.isOperational) {

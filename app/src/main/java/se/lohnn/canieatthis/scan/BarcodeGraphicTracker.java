@@ -19,6 +19,7 @@ import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.Tracker;
 import com.google.android.gms.vision.barcode.Barcode;
 
+import io.reactivex.subjects.Subject;
 import se.lohnn.canieatthis.camera.GraphicOverlay;
 
 /**
@@ -30,10 +31,12 @@ import se.lohnn.canieatthis.camera.GraphicOverlay;
 class BarcodeGraphicTracker extends Tracker<Barcode> {
     private GraphicOverlay<BarcodeGraphic> mOverlay;
     private BarcodeGraphic mGraphic;
+    private Subject<Barcode> subject;
 
-    BarcodeGraphicTracker(GraphicOverlay<BarcodeGraphic> overlay, BarcodeGraphic graphic) {
+    BarcodeGraphicTracker(GraphicOverlay<BarcodeGraphic> overlay, BarcodeGraphic graphic, Subject<Barcode> subject) {
         mOverlay = overlay;
         mGraphic = graphic;
+        this.subject = subject;
     }
 
     /**
@@ -49,6 +52,7 @@ class BarcodeGraphicTracker extends Tracker<Barcode> {
      */
     @Override
     public void onUpdate(Detector.Detections<Barcode> detectionResults, Barcode item) {
+        subject.onNext(item);
         mOverlay.add(mGraphic);
         mGraphic.updateItem(item);
     }

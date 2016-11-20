@@ -19,6 +19,7 @@ import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.Tracker;
 import com.google.android.gms.vision.barcode.Barcode;
 
+import io.reactivex.subjects.Subject;
 import se.lohnn.canieatthis.camera.GraphicOverlay;
 
 /**
@@ -27,15 +28,17 @@ import se.lohnn.canieatthis.camera.GraphicOverlay;
  */
 class BarcodeTrackerFactory implements MultiProcessor.Factory<Barcode> {
     private GraphicOverlay<BarcodeGraphic> mGraphicOverlay;
+    private Subject<Barcode> subject;
 
-    BarcodeTrackerFactory(GraphicOverlay<BarcodeGraphic> barcodeGraphicOverlay) {
+    BarcodeTrackerFactory(GraphicOverlay<BarcodeGraphic> barcodeGraphicOverlay, Subject<Barcode> barcodeSubject) {
         mGraphicOverlay = barcodeGraphicOverlay;
+        subject = barcodeSubject;
     }
 
     @Override
     public Tracker<Barcode> create(Barcode barcode) {
         BarcodeGraphic graphic = new BarcodeGraphic(mGraphicOverlay);
-        return new BarcodeGraphicTracker(mGraphicOverlay, graphic);
+        return new BarcodeGraphicTracker(mGraphicOverlay, graphic, subject);
     }
 
 }
