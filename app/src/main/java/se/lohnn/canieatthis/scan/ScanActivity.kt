@@ -21,11 +21,14 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
 import co.metalab.asyncawait.async
+import com.google.android.gms.vision.barcode.Barcode
+import io.reactivex.functions.BiPredicate
 import se.lohnn.canieatthis.R
 import se.lohnn.canieatthis.camera.CameraSourcePreview
 import se.lohnn.canieatthis.camera.GraphicOverlay
 import se.lohnn.canieatthis.databinding.ActivityScanBinding
 import se.lohnn.canieatthis.product.temp.ProductFactory
+import java.util.concurrent.TimeUnit
 
 /**
  * Activity for the multi-tracker app.  This app detects barcodes and displays the value with the
@@ -75,10 +78,16 @@ class ScanActivity : AppCompatActivity() {
         val useFlash = intent.getBooleanExtra(UseFlash, false)
 
         cameraManager = CameraManager(this, graphicOverlay, cameraPreview)
-        //TODO: Filter and check if it was the last one seen
-        cameraManager.barcodeSubject.subscribe({ barcode ->
-            Log.d(ScanActivity::class.java.simpleName, "Barcode found: $barcode")
-        })
+        cameraManager.barcodeSubject
+                .sample(500, TimeUnit.MILLISECONDS)
+                .distinctUntilChanged(object: BiPredicate<Barcode, Barcode> {
+                    override fun test(t1: Barcode, t2: Barcode): Boolean {
+                        return t1.rawValue == t2.rawValue
+                    }
+                })
+                .subscribe({ barcode ->
+                    Log.d(ScanActivity::class.java.simpleName, "Barcode found: ${barcode.rawValue}")
+                })
         binding.productOverview.product = ProductFactory.getRandomizedProduct()
     }
 
