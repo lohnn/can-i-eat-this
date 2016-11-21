@@ -121,6 +121,7 @@ class ScanActivity : AppCompatActivity() {
         super.onDestroy()
         async.cancelAll()
         async { await { cameraManager.stopCamera() } }
+        cameraManager.barcodeSubject.onComplete()
         cameraPreview.release()
     }
 

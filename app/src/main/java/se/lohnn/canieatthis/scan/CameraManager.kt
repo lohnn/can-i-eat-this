@@ -44,7 +44,6 @@ class CameraManager(val activity: Activity,
 
     private var cameraSource: CameraSource? = null
 
-    //TODO: Do we need to throw this away when done perhaps?
     val barcodeSubject: PublishSubject<Barcode> = PublishSubject.create<Barcode>()
 
     init {
