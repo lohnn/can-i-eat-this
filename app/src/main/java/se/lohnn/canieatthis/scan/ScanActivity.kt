@@ -86,6 +86,7 @@ class ScanActivity : AppCompatActivity() {
                     }
                 })
                 .subscribe({ barcode ->
+                    binding.productOverview.product = ProductFactory.getRandomizedProduct()
                     Log.d(ScanActivity::class.java.simpleName, "Barcode found: ${barcode.rawValue}")
                 })
         binding.productOverview.product = ProductFactory.getRandomizedProduct()
