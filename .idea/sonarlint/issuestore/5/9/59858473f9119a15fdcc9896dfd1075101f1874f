@@ -1,0 +1,18 @@
+
+Hsquid:UselessParenthesesCheck"!Remove those useless parentheses.(Î⁄±£
+Hsquid:UselessParenthesesCheck"!Remove those useless parentheses.(‡™Á¨
+Zsquid:S2184"FCast one of the operands of this multiplication operation to a "long".(¯•ÆA
+usquid:S1450"`Remove the "mDummySurfaceView" field and declare it as a local variable in the relevant methods.(„ì¡Ü
+xsquid:S1450"cRemove the "mDummySurfaceTexture" field and declare it as a local variable in the relevant methods.(¿∑¶π
+Usquid:S1213";Move this constructor to comply with Java Code Conventions.(“ÒıŒ˚ˇˇˇˇ
+ë squid:MethodCyclomaticComplexity"bThe Cyclomatic Complexity of this method "createCamera" is 12 which is greater than 10 authorized.(ã¿≈ã¸ˇˇˇˇ
+[squid:S2142"FEither re-interrupt this method or rethrow the "InterruptedException".(‰†πÄ
+[squid:S2142"FEither re-interrupt this method or rethrow the "InterruptedException".(‰†πÄ
+Isquid:S3346"4Move this "assert" side effect to another statement.(‡™Á¨
+osquid:S00104"_This file has 1,218 lines, which is greater than 1,000 authorized. Split it into smaller files.
+asquid:S00112"FDefine and throw a dedicated exception instead of using a generic one.(ù˜ˇ˘˝ˇˇˇˇ
+\squid:S00112"FDefine and throw a dedicated exception instead of using a generic one.(ó˜ÓÊ
+asquid:S00112"FDefine and throw a dedicated exception instead of using a generic one.(§Ê‘Å˚ˇˇˇˇ
+?squid:S1181"%Catch Exception instead of Throwable.(ïî¯æ¯ˇˇˇˇ
+qsquid:S00117"VRename this local variable name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Œï–ã˚ˇˇˇˇ
+Ssquid:S1155">Use isEmpty() to check whether the collection is empty or not.(€¡√ú

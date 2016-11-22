@@ -20,9 +20,9 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
-import co.metalab.asyncawait.async
 import com.google.android.gms.vision.barcode.Barcode
 import io.reactivex.functions.BiPredicate
+import org.jetbrains.anko.doAsync
 import se.lohnn.canieatthis.R
 import se.lohnn.canieatthis.camera.CameraSourcePreview
 import se.lohnn.canieatthis.camera.GraphicOverlay
@@ -67,9 +67,9 @@ class ScanActivity : AppCompatActivity() {
 
         binding.appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             if (Math.abs(verticalOffset) - binding.appBar.totalScrollRange == 0) {
-                async { await { cameraManager.stopCamera() } }
+                doAsync { cameraManager.stopCamera() }
             } else {
-                async { await { cameraManager.startCamera() } }
+                doAsync { cameraManager.startCamera() }
             }
         }
 
@@ -80,7 +80,7 @@ class ScanActivity : AppCompatActivity() {
         cameraManager = CameraManager(this, graphicOverlay, cameraPreview)
         cameraManager.barcodeSubject
                 .sample(500, TimeUnit.MILLISECONDS)
-                .distinctUntilChanged(object: BiPredicate<Barcode, Barcode> {
+                .distinctUntilChanged(object : BiPredicate<Barcode, Barcode> {
                     override fun test(t1: Barcode, t2: Barcode): Boolean {
                         return t1.rawValue == t2.rawValue
                     }
@@ -110,7 +110,7 @@ class ScanActivity : AppCompatActivity() {
      */
     override fun onPause() {
         super.onPause()
-        async { await { cameraManager.stopCamera() } }
+        doAsy nc { cameraManager.stopCamera() }
     }
 
     /**
@@ -119,8 +119,7 @@ class ScanActivity : AppCompatActivity() {
      */
     override fun onDestroy() {
         super.onDestroy()
-        async.cancelAll()
-        async { await { cameraManager.stopCamera() } }
+        doAsync { cameraManager.stopCamera() }
         cameraManager.barcodeSubject.onComplete()
         cameraPreview.release()
     }
