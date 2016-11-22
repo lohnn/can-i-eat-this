@@ -11,8 +11,8 @@
         tools:targetApi="n_mr1">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetPackage="se.lohnn.canieatthis"
-            android:targetClass="se.lohnn.canieatthis.scan.ScanActivity" />
+            android:targetPackage="se.lohnn.canieat"
+            android:targetClass="se.lohnn.canieat.scan.ScanActivity" />
     </shortcut>
     <!-- Specify more shortcuts here. -->
 </shortcuts>

@@ -1,4 +1,4 @@
-package se.lohnn.canieatthis.scan
+package se.lohnn.canieat.scan
 
 import android.Manifest
 import android.app.Activity
@@ -15,12 +15,12 @@ import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.subjects.PublishSubject
-import se.lohnn.canieatthis.R
-import se.lohnn.canieatthis.camera.CameraSource
-import se.lohnn.canieatthis.camera.CameraSourcePreview
-import se.lohnn.canieatthis.camera.GraphicOverlay
-import se.lohnn.canieatthis.permissions.Permission
-import se.lohnn.canieatthis.permissions.PermissionManager
+import se.lohnn.canieat.R
+import se.lohnn.canieat.camera.CameraSource
+import se.lohnn.canieat.camera.CameraSourcePreview
+import se.lohnn.canieat.camera.GraphicOverlay
+import se.lohnn.canieat.permissions.Permission
+import se.lohnn.canieat.permissions.PermissionManager
 import java.io.IOException
 
 class CameraManager(val activity: Activity,

@@ -1,4 +1,4 @@
-package se.lohnn.canieatthis.databindingutils;
+package se.lohnn.canieat.databindingutils;
 
 import android.databinding.BindingAdapter;
 import android.graphics.drawable.Drawable;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package se.lohnn.canieatthis.camera;
+package se.lohnn.canieat.camera;
 
 import android.Manifest;
 import android.content.Context;

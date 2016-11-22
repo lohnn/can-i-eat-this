@@ -7,14 +7,14 @@
 
         <variable
             name="product"
-            type="se.lohnn.canieatthis.product.Product" />
+            type="se.lohnn.canieat.product.Product" />
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context="se.lohnn.canieatthis.scan.ScanActivity"
+        tools:context="se.lohnn.canieat.scan.ScanActivity"
         tools:showIn="@layout/activity_scan">
 
 

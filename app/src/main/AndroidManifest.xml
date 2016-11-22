@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="se.lohnn.canieatthis">
+    package="se.lohnn.canieat">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <application
@@ -9,7 +9,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name="se.lohnn.canieat.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -19,9 +19,9 @@
                 android:resource="@xml/shortcuts" />
         </activity>
         <activity
-            android:name=".scan.ScanActivity"
+            android:name="se.lohnn.canieat.scan.ScanActivity"
             android:label="@string/title_activity_scan"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="se.lohnn.canieat.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,7 +30,7 @@
             </intent-filter>
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="se.lohnn.canieatthis.MainActivity" />
+                android:value="se.lohnn.canieat.MainActivity" />
         </activity>
     </application>
 </manifest>

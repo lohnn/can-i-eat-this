@@ -1,4 +1,4 @@
-package se.lohnn.canieatthis.permissions
+package se.lohnn.canieat.permissions
 
 import java.io.Serializable
 

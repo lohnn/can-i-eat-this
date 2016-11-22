@@ -13,21 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package se.lohnn.canieatthis.scan
+package se.lohnn.canieat.scan
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
-import com.google.android.gms.vision.barcode.Barcode
-import io.reactivex.functions.BiPredicate
 import org.jetbrains.anko.doAsync
-import se.lohnn.canieatthis.R
-import se.lohnn.canieatthis.camera.CameraSourcePreview
-import se.lohnn.canieatthis.camera.GraphicOverlay
-import se.lohnn.canieatthis.databinding.ActivityScanBinding
-import se.lohnn.canieatthis.product.temp.ProductFactory
+import se.lohnn.canieat.R
+import se.lohnn.canieat.camera.CameraSourcePreview
+import se.lohnn.canieat.camera.GraphicOverlay
+import se.lohnn.canieat.databinding.ActivityScanBinding
+import se.lohnn.canieat.product.temp.ProductFactory
 import java.util.concurrent.TimeUnit
 
 /**
@@ -80,11 +78,7 @@ class ScanActivity : AppCompatActivity() {
         cameraManager = CameraManager(this, graphicOverlay, cameraPreview)
         cameraManager.barcodeSubject
                 .sample(500, TimeUnit.MILLISECONDS)
-                .distinctUntilChanged(object : BiPredicate<Barcode, Barcode> {
-                    override fun test(t1: Barcode, t2: Barcode): Boolean {
-                        return t1.rawValue == t2.rawValue
-                    }
-                })
+                .distinctUntilChanged { t1, t2 -> t1.rawValue == t2.rawValue }
                 .subscribe({ barcode ->
                     binding.productOverview.product = ProductFactory.getRandomizedProduct()
                     Log.d(ScanActivity::class.java.simpleName, "Barcode found: ${barcode.rawValue}")
@@ -110,7 +104,7 @@ class ScanActivity : AppCompatActivity() {
      */
     override fun onPause() {
         super.onPause()
-        doAsy nc { cameraManager.stopCamera() }
+        doAsync { cameraManager.stopCamera() }
     }
 
     /**

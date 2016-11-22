@@ -1,4 +1,4 @@
-package se.lohnn.canieatthis;
+package se.lohnn.canieat;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("se.lohnn.canieatthis", appContext.getPackageName());
+        assertEquals("se.lohnn.canieat", appContext.getPackageName());
     }
 }

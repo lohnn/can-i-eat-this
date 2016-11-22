@@ -1,6 +1,6 @@
-package se.lohnn.canieatthis.product.temp
+package se.lohnn.canieat.product.temp
 
-import se.lohnn.canieatthis.product.Product
+import se.lohnn.canieat.product.Product
 import java.security.SecureRandom
 
 class ProductFactory {

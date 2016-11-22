@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package se.lohnn.canieatthis.scan;
+package se.lohnn.canieat.scan;
 
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.Tracker;
 import com.google.android.gms.vision.barcode.Barcode;
 
 import io.reactivex.subjects.Subject;
-import se.lohnn.canieatthis.camera.GraphicOverlay;
+import se.lohnn.canieat.camera.GraphicOverlay;
 
 /**
  * Generic tracker which is used for tracking or reading a barcode (and can really be used for

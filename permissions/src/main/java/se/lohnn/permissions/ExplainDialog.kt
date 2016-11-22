@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import io.reactivex.subjects.PublishSubject
-import se.lohnn.canieatthis.permissions.Permission
+import se.lohnn.canieat.permissions.Permission
 import se.lohnn.permissions.databinding.ExplainPermissionsBinding
 
 

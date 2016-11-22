@@ -1,4 +1,4 @@
-package se.lohnn.canieatthis;
+package se.lohnn.canieat;
 
 import org.junit.Test;
 
