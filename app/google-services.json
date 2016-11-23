@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "783950480368",
+    "firebase_url": "https://can-i-eat-this-ca957.firebaseio.com",
+    "project_id": "can-i-eat-this-ca957",
+    "storage_bucket": "can-i-eat-this-ca957.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:783950480368:android:de7c99fbba1f6ed4",
+        "android_client_info": {
+          "package_name": "se.lohnn.canieat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "783950480368-5e35if1prv9qppivcchog69klbjagmpl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "se.lohnn.canieat",
+            "certificate_hash": "0104F632E615CBD0A724172D30FE5EDA086E990B"
+          }
+        },
+        {
+          "client_id": "783950480368-b2acf7uo5b54v73k77f5npn4c5k38kqh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACqiBL0kMwA7Cr2Yu3CFi8UNxZTZ5d_U8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "783950480368-b2acf7uo5b54v73k77f5npn4c5k38kqh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

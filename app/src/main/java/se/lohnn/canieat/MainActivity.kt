@@ -13,10 +13,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.clickListener = this
-
-        val database = FirebaseDatabase.getInstance()
-        val myRef = database.getReference("message")
-        myRef.setValue("Heyoo!")
     }
 
     fun onClick() {

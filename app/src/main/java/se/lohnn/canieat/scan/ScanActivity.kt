@@ -20,11 +20,16 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import org.jetbrains.anko.doAsync
 import se.lohnn.canieat.R
 import se.lohnn.canieat.camera.CameraSourcePreview
 import se.lohnn.canieat.camera.GraphicOverlay
 import se.lohnn.canieat.databinding.ActivityScanBinding
+import se.lohnn.canieat.product.Product
 import se.lohnn.canieat.product.temp.ProductFactory
 import java.util.concurrent.TimeUnit
 
@@ -80,8 +85,25 @@ class ScanActivity : AppCompatActivity() {
                 .sample(500, TimeUnit.MILLISECONDS)
                 .distinctUntilChanged { t1, t2 -> t1.rawValue == t2.rawValue }
                 .subscribe({ barcode ->
-                    binding.productOverview.product = ProductFactory.getRandomizedProduct()
-                    Log.d(ScanActivity::class.java.simpleName, "Barcode found: ${barcode.rawValue}")
+                    val randomProduct = ProductFactory.getRandomizedProduct()
+                    val database = FirebaseDatabase.getInstance()
+                    val myRef = database.getReference("products/${barcode.rawValue}")
+                    myRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                            val product = if (dataSnapshot?.value != null) dataSnapshot?.getValue(Product::class.java) else null
+                            if (product == null) {
+                                myRef.setValue(randomProduct)
+                                binding.productOverview.product = randomProduct
+                                Log.d(ScanActivity::class.java.simpleName, "Barcode found: ${barcode.rawValue}")
+                            } else {
+                                binding.productOverview.product = product
+                            }
+                        }
+
+                        override fun onCancelled(p0: DatabaseError?) {
+                        }
+                    })
+
                 })
         binding.productOverview.product = ProductFactory.getRandomizedProduct()
     }
