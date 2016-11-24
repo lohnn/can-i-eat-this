@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package se.lohnn.canieat.scan
+package se.lohnn.canieat
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -25,12 +25,14 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import org.jetbrains.anko.doAsync
-import se.lohnn.canieat.R
+import org.jetbrains.anko.startActivity
 import se.lohnn.canieat.camera.CameraSourcePreview
 import se.lohnn.canieat.camera.GraphicOverlay
 import se.lohnn.canieat.databinding.ActivityScanBinding
 import se.lohnn.canieat.product.Product
 import se.lohnn.canieat.product.temp.ProductFactory
+import se.lohnn.canieat.scan.BarcodeGraphic
+import se.lohnn.canieat.scan.CameraManager
 import java.util.concurrent.TimeUnit
 
 /**
@@ -41,14 +43,16 @@ import java.util.concurrent.TimeUnit
 class ScanActivity : AppCompatActivity() {
     companion object {
         // constants used to pass extra data in the intent
-        val AutoFocus = "AutoFocus"
-        val UseFlash = "UseFlash"
-        val BarcodeObject = "Barcode"
+        val KEY_AUTO_FOCUS = "KEY_AUTO_FOCUS"
+        val KEY_USE_FLASH = "KEY_USE_FLASH"
     }
 
     private lateinit var cameraPreview: CameraSourcePreview
     private lateinit var graphicOverlay: GraphicOverlay<BarcodeGraphic>
     private lateinit var cameraManager: CameraManager
+
+    private var currentProductUUID: String? = null
+    private var currentProduct: Product? = null
 
     /**
      * Initializes the UI and creates the detector pipeline.
@@ -56,9 +60,9 @@ class ScanActivity : AppCompatActivity() {
     public override fun onCreate(icicle: Bundle?) {
         super.onCreate(icicle)
         val binding: ActivityScanBinding = DataBindingUtil.setContentView(this, R.layout.activity_scan)
+        binding.clickListener = this
         cameraPreview = binding.preview
         graphicOverlay = binding.graphicOverlay as GraphicOverlay<BarcodeGraphic>
-
 
         graphicOverlay.setTapListener { barcodeGraphic ->
             if (barcodeGraphic.barcode != null) {
@@ -77,26 +81,29 @@ class ScanActivity : AppCompatActivity() {
         }
 
         // read parameters from the intent used to launch the activity.
-        val autoFocus = intent.getBooleanExtra(AutoFocus, true)
-        val useFlash = intent.getBooleanExtra(UseFlash, false)
+        val autoFocus = intent.getBooleanExtra(KEY_AUTO_FOCUS, true)
+        val useFlash = intent.getBooleanExtra(KEY_USE_FLASH, false)
 
         cameraManager = CameraManager(this, graphicOverlay, cameraPreview)
         cameraManager.barcodeSubject
                 .sample(500, TimeUnit.MILLISECONDS)
                 .distinctUntilChanged { t1, t2 -> t1.rawValue == t2.rawValue }
                 .subscribe({ barcode ->
-                    val randomProduct = ProductFactory.getRandomizedProduct()
                     val database = FirebaseDatabase.getInstance()
                     val myRef = database.getReference("products/${barcode.rawValue}")
                     myRef.addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot?) {
                             val product = if (dataSnapshot?.value != null) dataSnapshot?.getValue(Product::class.java) else null
+                            currentProductUUID = barcode.rawValue
                             if (product == null) {
+                                val randomProduct = ProductFactory.getRandomizedProduct()
                                 myRef.setValue(randomProduct)
                                 binding.productOverview.product = randomProduct
                                 Log.d(ScanActivity::class.java.simpleName, "Barcode found: ${barcode.rawValue}")
+                                currentProduct = randomProduct
                             } else {
                                 binding.productOverview.product = product
+                                currentProduct = product
                             }
                         }
 
@@ -105,7 +112,15 @@ class ScanActivity : AppCompatActivity() {
                     })
 
                 })
-        binding.productOverview.product = ProductFactory.getRandomizedProduct()
+    }
+
+    fun openEditView() {
+        if (currentProduct != null && currentProductUUID != null) {
+            startActivity<EditProductActivity>(
+                    EditProductActivity.KEY_UUID to currentProductUUID!!,
+                    EditProductActivity.KEY_PRODUCT to currentProduct!!
+            )
+        }
     }
 
     private fun setupActionBar(toolbar: Toolbar) {

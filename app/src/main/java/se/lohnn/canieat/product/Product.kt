@@ -1,6 +1,8 @@
 package se.lohnn.canieat.product
 
-class Product() {
+import java.io.Serializable
+
+class Product() : Serializable {
     lateinit var name: String
     lateinit var description: String
     lateinit var imageURL: String

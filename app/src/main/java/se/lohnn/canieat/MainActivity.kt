@@ -4,9 +4,8 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.google.firebase.database.FirebaseDatabase
+import org.jetbrains.anko.startActivity
 import se.lohnn.canieat.databinding.ActivityMainBinding
-import se.lohnn.canieat.scan.ScanActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,9 +15,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onClick() {
-        val scanIntent = Intent(this, ScanActivity::class.java)
-        scanIntent.putExtra(ScanActivity.AutoFocus, true)
-        scanIntent.putExtra(ScanActivity.UseFlash, false)
-        startActivity(scanIntent)
+        startActivity<ScanActivity>(
+                ScanActivity.KEY_AUTO_FOCUS to true,
+                ScanActivity.KEY_USE_FLASH to false)
     }
 }

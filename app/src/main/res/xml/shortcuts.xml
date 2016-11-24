@@ -12,7 +12,7 @@
         <intent
             android:action="android.intent.action.VIEW"
             android:targetPackage="se.lohnn.canieat"
-            android:targetClass="se.lohnn.canieat.scan.ScanActivity" />
+            android:targetClass="se.lohnn.canieat.ScanActivity" />
     </shortcut>
     <!-- Specify more shortcuts here. -->
 </shortcuts>
