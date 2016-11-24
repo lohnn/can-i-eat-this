@@ -17,15 +17,17 @@ package se.lohnn.canieat
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
+import android.view.View
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.intentFor
 import se.lohnn.canieat.camera.CameraSourcePreview
 import se.lohnn.canieat.camera.GraphicOverlay
 import se.lohnn.canieat.databinding.ActivityScanBinding
@@ -34,6 +36,7 @@ import se.lohnn.canieat.product.temp.ProductFactory
 import se.lohnn.canieat.scan.BarcodeGraphic
 import se.lohnn.canieat.scan.CameraManager
 import java.util.concurrent.TimeUnit
+
 
 /**
  * Activity for the multi-tracker app.  This app detects barcodes and displays the value with the
@@ -53,13 +56,14 @@ class ScanActivity : AppCompatActivity() {
 
     private var currentProductUUID: String? = null
     private var currentProduct: Product? = null
+    private lateinit var binding: ActivityScanBinding
 
     /**
      * Initializes the UI and creates the detector pipeline.
      */
     public override fun onCreate(icicle: Bundle?) {
         super.onCreate(icicle)
-        val binding: ActivityScanBinding = DataBindingUtil.setContentView(this, R.layout.activity_scan)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_scan)
         binding.clickListener = this
         cameraPreview = binding.preview
         graphicOverlay = binding.graphicOverlay as GraphicOverlay<BarcodeGraphic>
@@ -116,10 +120,12 @@ class ScanActivity : AppCompatActivity() {
 
     fun openEditView() {
         if (currentProduct != null && currentProductUUID != null) {
-            startActivity<EditProductActivity>(
+            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, binding.productOverview.imageView as View, "transition_image")
+            val intent = intentFor<EditProductActivity>(
                     EditProductActivity.KEY_UUID to currentProductUUID!!,
                     EditProductActivity.KEY_PRODUCT to currentProduct!!
             )
+            startActivity(intent, options.toBundle())
         }
     }
 
