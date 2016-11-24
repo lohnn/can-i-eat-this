@@ -20,7 +20,9 @@ class EditProductActivity : AppCompatActivity() {
         val binding = DataBindingUtil.setContentView<ActivityEditProductBinding>(this, R.layout.activity_edit_product)
         uuid = intent.getStringExtra(KEY_UUID)
         product = intent.getSerializableExtra(KEY_PRODUCT) as Product
-
         binding.product = product
+
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 }
