@@ -1,15 +1,17 @@
 package se.lohnn.canieat
 
 import android.databinding.DataBindingUtil
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
+import android.view.Menu
+import android.view.MenuItem
 import se.lohnn.canieat.databinding.ActivityEditProductBinding
 import se.lohnn.canieat.product.Product
 
 class EditProductActivity : AppCompatActivity() {
     companion object {
         val KEY_UUID = "uuid"
-        val  KEY_PRODUCT = "product"
+        val KEY_PRODUCT = "product"
     }
 
     private lateinit var uuid: String
@@ -24,5 +26,20 @@ class EditProductActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.edit_product_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.done -> {
+
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

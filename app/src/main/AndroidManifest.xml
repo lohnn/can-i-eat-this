@@ -36,7 +36,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="se.lohnn.canieat.MainActivity"/>
         </activity>
-        <activity android:name=".EditProductActivity">
+        <activity
+            android:name=".EditProductActivity"
+            android:label="@string/edit_product"
+            android:parentActivityName=".ScanActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 
