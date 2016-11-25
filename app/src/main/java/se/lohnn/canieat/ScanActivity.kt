@@ -88,6 +88,7 @@ class ScanActivity : AppCompatActivity() {
         val autoFocus = intent.getBooleanExtra(KEY_AUTO_FOCUS, true)
         val useFlash = intent.getBooleanExtra(KEY_USE_FLASH, false)
 
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
         cameraManager = CameraManager(this, graphicOverlay, cameraPreview)
         cameraManager.barcodeSubject
                 .sample(500, TimeUnit.MILLISECONDS)
