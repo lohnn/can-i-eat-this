@@ -22,15 +22,12 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.View
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.intentFor
 import se.lohnn.canieat.camera.CameraSourcePreview
 import se.lohnn.canieat.camera.GraphicOverlay
 import se.lohnn.canieat.databinding.ActivityScanBinding
+import se.lohnn.canieat.dataservice.DataService
 import se.lohnn.canieat.product.Product
 import se.lohnn.canieat.product.temp.ProductFactory
 import se.lohnn.canieat.scan.BarcodeGraphic
@@ -88,34 +85,16 @@ class ScanActivity : AppCompatActivity() {
         val autoFocus = intent.getBooleanExtra(KEY_AUTO_FOCUS, true)
         val useFlash = intent.getBooleanExtra(KEY_USE_FLASH, false)
 
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
         cameraManager = CameraManager(this, graphicOverlay, cameraPreview)
         cameraManager.barcodeSubject
                 .sample(500, TimeUnit.MILLISECONDS)
                 .distinctUntilChanged { t1, t2 -> t1.rawValue == t2.rawValue }
                 .subscribe({ barcode ->
-                    val database = FirebaseDatabase.getInstance()
-                    val myRef = database.getReference("products/${barcode.rawValue}")
-                    myRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onDataChange(dataSnapshot: DataSnapshot?) {
-                            val product = if (dataSnapshot?.value != null) dataSnapshot?.getValue(Product::class.java) else null
-                            currentProductUUID = barcode.rawValue
-                            if (product == null) {
-                                val randomProduct = ProductFactory.getRandomizedProduct()
-                                myRef.setValue(randomProduct)
-                                binding.productOverview.product = randomProduct
-                                Log.d(ScanActivity::class.java.simpleName, "Barcode found: ${barcode.rawValue}")
-                                currentProduct = randomProduct
-                            } else {
-                                binding.productOverview.product = product
-                                currentProduct = product
-                            }
-                        }
-
-                        override fun onCancelled(p0: DatabaseError?) {
-                        }
-                    })
-
+                    DataService.instance.getProduct(barcode.rawValue) { product ->
+                        binding.productOverview.product = product
+                        currentProduct = product
+                        currentProductUUID = barcode.rawValue
+                    }
                 })
     }
 
