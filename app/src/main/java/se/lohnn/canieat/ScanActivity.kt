@@ -15,6 +15,7 @@
  */
 package se.lohnn.canieat
 
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
@@ -29,7 +30,6 @@ import se.lohnn.canieat.camera.GraphicOverlay
 import se.lohnn.canieat.databinding.ActivityScanBinding
 import se.lohnn.canieat.dataservice.DataService
 import se.lohnn.canieat.product.Product
-import se.lohnn.canieat.product.temp.ProductFactory
 import se.lohnn.canieat.scan.BarcodeGraphic
 import se.lohnn.canieat.scan.CameraManager
 import java.util.concurrent.TimeUnit
@@ -45,6 +45,7 @@ class ScanActivity : AppCompatActivity() {
         // constants used to pass extra data in the intent
         val KEY_AUTO_FOCUS = "KEY_AUTO_FOCUS"
         val KEY_USE_FLASH = "KEY_USE_FLASH"
+        private val EDIT_REQUEST_RESULT = 123
     }
 
     private lateinit var cameraPreview: CameraSourcePreview
@@ -105,7 +106,15 @@ class ScanActivity : AppCompatActivity() {
                     EditProductActivity.KEY_UUID to currentProductUUID!!,
                     EditProductActivity.KEY_PRODUCT to currentProduct!!
             )
-            startActivity(intent, options.toBundle())
+            startActivityForResult(intent, Companion.EDIT_REQUEST_RESULT, options.toBundle())
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == EDIT_REQUEST_RESULT && resultCode == RESULT_OK) {
+            val barcode = data!!.getStringExtra(EditProductActivity.KEY_UUID)
+            val product = data.getSerializableExtra(EditProductActivity.KEY_PRODUCT) as Product
+            DataService.instance.saveProduct(barcode, product)
         }
     }
 

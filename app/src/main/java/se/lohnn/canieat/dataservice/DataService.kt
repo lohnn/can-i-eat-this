@@ -36,6 +36,11 @@ class DataService private constructor() {
         }
     }
 
+
+    fun saveProduct(barcode: String, product: Product) {
+        databaseSave("products/$barcode", product)
+    }
+
     private fun databaseSave(databasePoint: String, obj: Any) {
         database.getReference(databasePoint).setValue(obj)
     }
