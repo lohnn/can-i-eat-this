@@ -30,6 +30,7 @@
             android:layout_gravity="center|bottom"
             android:layout_margin="16dp"
             android:onClick="@{()->clickListener.onClick()}"
-            android:src="@drawable/barcode_scan" />
+            android:src="@drawable/barcode_scan"
+            android:transitionName="transition_fab"/>
     </android.support.design.widget.CoordinatorLayout>
 </layout>

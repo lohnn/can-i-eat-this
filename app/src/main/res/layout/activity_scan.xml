@@ -40,7 +40,7 @@
                     <se.lohnn.canieat.camera.GraphicOverlay
                         android:id="@+id/graphicOverlay"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="match_parent"/>
                 </se.lohnn.canieat.camera.CameraSourcePreview>
 
                 <android.support.v7.widget.Toolbar
@@ -70,7 +70,8 @@
             android:layout_gravity="right|end|bottom"
             android:layout_margin="16dp"
             android:onClick="@{()->clickListener.openEditView()}"
-            android:src="@drawable/ic_mode_edit_24dp" />
+            android:src="@drawable/ic_mode_edit_24dp"
+            android:transitionName="transition_fab"/>
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>
