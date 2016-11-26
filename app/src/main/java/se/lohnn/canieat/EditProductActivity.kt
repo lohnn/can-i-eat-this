@@ -41,9 +41,7 @@ class EditProductActivity : AppCompatActivity() {
             R.id.done -> {
                 val intent = Intent()
                 intent.putExtra(KEY_UUID, uuid)
-                product.description += " yo"
                 intent.putExtra(KEY_PRODUCT, product)
-                //TODO: Create product from either two way databinding or reading from textareas
                 setResult(Activity.RESULT_OK, intent)
                 finish()
                 return true
