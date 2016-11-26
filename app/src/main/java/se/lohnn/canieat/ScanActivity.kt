@@ -19,10 +19,10 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
+import android.support.v4.util.Pair
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
-import android.view.Menu
 import android.view.View
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.intentFor
@@ -106,7 +106,9 @@ class ScanActivity : AppCompatActivity() {
 
     fun openEditView() {
         if (currentProduct != null && currentProductUUID != null) {
-            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, binding.productOverview.imageView as View, "transition_image")
+            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
+                    Pair(binding.productOverview.imageView as View, "transition_image"),
+                    Pair(binding.toolbar as View, "transition_toolbar"))
             val intent = intentFor<EditProductActivity>(
                     EditProductActivity.KEY_UUID to currentProductUUID!!,
                     EditProductActivity.KEY_PRODUCT to currentProduct!!

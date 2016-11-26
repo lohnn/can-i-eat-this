@@ -4,9 +4,10 @@
         xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="clickListener"
-            type="se.lohnn.canieat.ScanActivity" />
+            type="se.lohnn.canieat.ScanActivity"/>
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -47,6 +48,7 @@
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
+                    android:transitionName="transition_toolbar"
                     app:layout_collapseMode="pin"
                     app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
