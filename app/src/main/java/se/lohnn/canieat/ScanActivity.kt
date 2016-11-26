@@ -23,6 +23,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.View
+import com.google.android.gms.vision.barcode.Barcode
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.intentFor
 import se.lohnn.canieat.camera.CameraSourcePreview
@@ -92,11 +93,15 @@ class ScanActivity : AppCompatActivity() {
                 .distinctUntilChanged { t1, t2 -> t1.rawValue == t2.rawValue }
                 .subscribe({ barcode ->
                     DataService.instance.getProduct(barcode.rawValue) { product ->
-                        binding.productOverview.product = product
-                        currentProduct = product
-                        currentProductUUID = barcode.rawValue
+                        setCurrentProduct(barcode.rawValue, product)
                     }
                 })
+    }
+
+    private fun setCurrentProduct(barcode: String, product: Product) {
+        binding.productOverview.product = product
+        currentProduct = product
+        currentProductUUID = barcode
     }
 
     fun openEditView() {
@@ -115,6 +120,7 @@ class ScanActivity : AppCompatActivity() {
             val barcode = data!!.getStringExtra(EditProductActivity.KEY_UUID)
             val product = data.getSerializableExtra(EditProductActivity.KEY_PRODUCT) as Product
             DataService.instance.saveProduct(barcode, product)
+            setCurrentProduct(barcode, product)
         }
     }
 
