@@ -22,8 +22,8 @@ import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
+import android.view.Menu
 import android.view.View
-import com.google.android.gms.vision.barcode.Barcode
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.intentFor
 import se.lohnn.canieat.camera.CameraSourcePreview

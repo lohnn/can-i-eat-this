@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import org.jetbrains.anko.intentFor
 import se.lohnn.canieat.databinding.ActivityEditProductBinding
 import se.lohnn.canieat.product.Product
 
