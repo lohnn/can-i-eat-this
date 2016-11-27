@@ -28,22 +28,17 @@ class CameraManager(val activity: Activity,
                     val cameraPreview: CameraSourcePreview) {
     companion object {
         private val TAG = "Barcode-reader"
-
         // intent request code to handle updating play services if needed.
         private val RC_HANDLE_GMS = 9001
-
         // permission request codes need to be < 256
         private val RC_HANDLE_CAMERA_PERM = 2
-
         private val permissions = listOf(Permission(Manifest.permission.CAMERA,
                 R.string.rationale_permission_title,
                 true))
     }
 
     val permissionManager = PermissionManager(activity, RC_HANDLE_CAMERA_PERM)
-
     private var cameraSource: CameraSource? = null
-
     val barcodeSubject: PublishSubject<Barcode> = PublishSubject.create<Barcode>()
 
     init {

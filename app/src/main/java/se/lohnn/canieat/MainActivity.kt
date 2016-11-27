@@ -19,9 +19,7 @@ class MainActivity : AppCompatActivity() {
     fun onClick() {
 //        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, fab, "transition_fab")
 
-        val intent = intentFor<ScanActivity>(
-                ScanActivity.KEY_AUTO_FOCUS to true,
-                ScanActivity.KEY_USE_FLASH to false)
+        val intent = intentFor<ScanActivity>()
         startActivity(intent)//, options.toBundle())
     }
 }

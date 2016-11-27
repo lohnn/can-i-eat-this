@@ -83,10 +83,6 @@ class ScanActivity : AppCompatActivity() {
             }
         }
 
-        // read parameters from the intent used to launch the activity.
-        val autoFocus = intent.getBooleanExtra(KEY_AUTO_FOCUS, true)
-        val useFlash = intent.getBooleanExtra(KEY_USE_FLASH, false)
-
         cameraManager = CameraManager(this, graphicOverlay, cameraPreview)
         cameraManager.barcodeSubject
                 .sample(500, TimeUnit.MILLISECONDS)
