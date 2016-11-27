@@ -61,6 +61,7 @@
                 android:transitionName="transition_image"
                 app:error='@{@drawable/barcode_scan}'
                 app:imageUrl='@{product.imageURL}'
+                app:layout_constraintHorizontal_bias="0.43"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -68,6 +69,14 @@
                 tools:layout_constraintRight_creator="1"
                 tools:layout_constraintTop_creator="1"
                 tools:src="@drawable/barcode_scan"/>
+
+            <ImageView
+                android:id="@+id/take_photo"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="#33ff0000"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView"
+                app:layout_constraintRight_toRightOf="@+id/imageView"/>
 
             <EditText
                 android:id="@+id/textView2"
