@@ -1,10 +1,6 @@
 package se.lohnn.canieat.dataservice
 
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.GenericTypeIndicator
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import se.lohnn.canieat.product.Product
 import se.lohnn.canieat.product.temp.ProductFactory
 

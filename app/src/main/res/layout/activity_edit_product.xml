@@ -60,7 +60,7 @@
                 android:contentDescription="@string/image_of_product"
                 android:transitionName="transition_image"
                 app:error='@{@drawable/barcode_scan}'
-                app:imageUrl='@{product.imageURL}'
+                app:imageUUID='@{product.imageUUID}'
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

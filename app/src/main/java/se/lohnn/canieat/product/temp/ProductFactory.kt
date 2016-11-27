@@ -8,11 +8,7 @@ class ProductFactory {
 
     companion object {
         val random = SecureRandom()
-        val imageList = listOf("https://cdn.pixabay.com/photo/2016/03/05/22/31/appetite-1239303_960_720.jpg",
-                "https://cdn.pixabay.com/photo/2010/12/13/09/59/appetite-2039_640.jpg",
-                "https://cdn.pixabay.com/photo/2013/04/07/21/30/croissant-101636_640.jpg",
-                "https://cdn.pixabay.com/photo/2014/07/09/22/09/farmers-bread-388647_640.jpg",
-                "https://cdn.pixabay.com/photo/2016/03/09/22/50/food-1247612_640.jpg")
+        val imageList = listOf("forest-1818690_1280")
         val descriptionList = listOf("A short description of my product",
                 "The only way to describe this is with words, please do.",
                 "I'm just writing some descriptions here now.",
