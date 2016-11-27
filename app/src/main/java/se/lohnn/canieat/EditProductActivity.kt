@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import se.lohnn.canieat.databinding.ActivityEditProductBinding
-import se.lohnn.canieat.PhotoUtil
 import se.lohnn.canieat.product.Product
 
 
@@ -40,11 +39,8 @@ class EditProductActivity : AppCompatActivity() {
     private fun takePhoto() {
         val imageFile = PhotoUtil.createImageFile(cacheDir)
         if (imageFile != null) {
-            val photoIntent = PhotoUtil.takePhotoIntent(this, imageFile)
-            if (photoIntent != null) {
-                currentPhotoPath = imageFile.absolutePath
-                startActivityForResult(photoIntent, EditProductActivity.REQUEST_TAKE_PHOTO)
-            }
+            currentPhotoPath = imageFile.absolutePath
+            takePhoto(imageFile, REQUEST_TAKE_PHOTO)
         }
     }
 

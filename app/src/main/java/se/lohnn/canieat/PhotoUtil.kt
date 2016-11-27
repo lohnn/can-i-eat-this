@@ -1,11 +1,32 @@
 package se.lohnn.canieat
 
-import android.app.Activity
 import android.content.Intent
 import android.provider.MediaStore
 import android.support.v4.content.FileProvider
+import android.support.v7.app.AppCompatActivity
 import java.io.File
 import java.util.*
+
+/**
+ * Starts an Image capture intent with the specified request code.
+ * If request code is left out, this method will provide one for you.
+ * @param photoFile File location of photo
+ * @param requestCode Optional request code of intent
+ * @return Request code
+ */
+fun AppCompatActivity.takePhoto(photoFile: File, requestCode: Int = 1337): Int {
+    val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+    // Ensure that there's a camera activity to handle the intent
+    if (takePictureIntent.resolveActivity(packageManager) != null) {
+        // Continue only if the File was successfully created
+        val photoURI = FileProvider.getUriForFile(this,
+                "se.lohnn.fileprovider",
+                photoFile)
+        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+        startActivityForResult(takePictureIntent, requestCode)
+    }
+    return requestCode
+}
 
 class PhotoUtil {
     companion object {
@@ -24,20 +45,6 @@ class PhotoUtil {
                 return image
             }
             //TODO: Print something useful to the user
-            return null
-        }
-
-        fun takePhotoIntent(activity: Activity, photoFile: File): Intent? {
-            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            // Ensure that there's a camera activity to handle the intent
-            if (takePictureIntent.resolveActivity(activity.packageManager) != null) {
-                // Continue only if the File was successfully created
-                val photoURI = FileProvider.getUriForFile(activity,
-                        "se.lohnn.fileprovider",
-                        photoFile)
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                return takePictureIntent
-            }
             return null
         }
     }
