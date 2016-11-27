@@ -4,15 +4,12 @@ import android.app.Activity
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.provider.MediaStore
-import android.support.v4.content.FileProvider
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import se.lohnn.canieat.databinding.ActivityEditProductBinding
+import se.lohnn.canieat.PhotoUtil
 import se.lohnn.canieat.product.Product
-import java.io.File
-import java.util.UUID
 
 
 class EditProductActivity : AppCompatActivity() {
@@ -41,48 +38,22 @@ class EditProductActivity : AppCompatActivity() {
     }
 
     private fun takePhoto() {
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(packageManager) != null) {
-            // Create the File where the photo should go
-            val photoFile = createImageFile()
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                val photoURI = FileProvider.getUriForFile(this,
-                        "se.lohnn.fileprovider",
-                        photoFile)
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO)
+        val imageFile = PhotoUtil.createImageFile(cacheDir)
+        if (imageFile != null) {
+            val photoIntent = PhotoUtil.takePhotoIntent(this, imageFile)
+            if (photoIntent != null) {
+                currentPhotoPath = imageFile.absolutePath
+                startActivityForResult(photoIntent, EditProductActivity.REQUEST_TAKE_PHOTO)
             }
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK && currentPhotoPath != null) {
             val product = binding.product
             product.imageURL = currentPhotoPath!!
             binding.product = product
         }
-    }
-
-    private fun createImageFile(): File? {
-        // Create an image file name
-        val uuid = UUID.randomUUID().toString()
-        val imageFileName = "JPEG_${uuid}_"
-        val cachePhotoDir = File(cacheDir, "photoCache")
-        if (cachePhotoDir.exists() || cachePhotoDir.mkdirs()) {
-            val image = File.createTempFile(
-                    imageFileName, /* prefix */
-                    ".jpg", /* suffix */
-                    cachePhotoDir      /* directory */
-            )
-
-            // Save a file: path for use with ACTION_VIEW intents
-            currentPhotoPath = image.absolutePath
-            return image
-        }
-        //TODO: Print something useful to the user
-        return null
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
