@@ -14,7 +14,9 @@ import java.util.*
  * @param requestCode Optional request code of intent
  * @return Request code
  */
-fun AppCompatActivity.takePhoto(photoFile: File, requestCode: Int = 1337): Int {
+fun AppCompatActivity.takePhoto(photoFile: File?, requestCode: Int = 1337): Int {
+    if (photoFile == null) return requestCode
+    
     val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
     // Ensure that there's a camera activity to handle the intent
     if (takePictureIntent.resolveActivity(packageManager) != null) {
@@ -28,24 +30,20 @@ fun AppCompatActivity.takePhoto(photoFile: File, requestCode: Int = 1337): Int {
     return requestCode
 }
 
-class PhotoUtil {
-    companion object {
-        fun createImageFile(cacheDir: File): File? {
-            // Create an image file name
-            val uuid = UUID.randomUUID().toString()
-            val cachePhotoDir = File(cacheDir, "photoCache")
-            if (cachePhotoDir.exists() || cachePhotoDir.mkdirs()) {
-                val image = File.createTempFile(
-                        uuid, /* prefix */
-                        ".jpg", /* suffix */
-                        cachePhotoDir      /* directory */
-                )
+fun AppCompatActivity.createRandomImageInCache(): File? {
+    // Create an image file name
+    val uuid = UUID.randomUUID().toString()
+    val cachePhotoDir = File(cacheDir, "photoCache")
+    if (cachePhotoDir.exists() || cachePhotoDir.mkdirs()) {
+        val image = File.createTempFile(
+                uuid, /* prefix */
+                ".jpg", /* suffix */
+                cachePhotoDir      /* directory */
+        )
 
-                // Save a file: path for use with ACTION_VIEW intents
-                return image
-            }
-            //TODO: Print something useful to the user
-            return null
-        }
+        // Save a file: path for use with ACTION_VIEW intents
+        return image
     }
+    //TODO: Print something useful to the user
+    return null
 }

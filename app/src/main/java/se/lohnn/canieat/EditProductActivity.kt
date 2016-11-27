@@ -9,7 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import se.lohnn.canieat.databinding.ActivityEditProductBinding
 import se.lohnn.canieat.product.Product
-
+import java.io.File
 
 class EditProductActivity : AppCompatActivity() {
     companion object {
@@ -20,7 +20,7 @@ class EditProductActivity : AppCompatActivity() {
 
     private lateinit var uuid: String
     private lateinit var binding: ActivityEditProductBinding
-    private var currentPhotoPath: String? = null
+    private var currentPhotoPath: File? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,17 +37,14 @@ class EditProductActivity : AppCompatActivity() {
     }
 
     private fun takePhoto() {
-        val imageFile = PhotoUtil.createImageFile(cacheDir)
-        if (imageFile != null) {
-            currentPhotoPath = imageFile.absolutePath
-            takePhoto(imageFile, REQUEST_TAKE_PHOTO)
-        }
+        currentPhotoPath = createRandomImageInCache()
+        takePhoto(currentPhotoPath, REQUEST_TAKE_PHOTO)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK && currentPhotoPath != null) {
             val product = binding.product
-            product.imageURL = currentPhotoPath!!
+            product.imageURL = currentPhotoPath!!.absolutePath
             binding.product = product
         }
     }
