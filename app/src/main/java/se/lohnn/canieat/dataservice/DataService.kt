@@ -1,6 +1,12 @@
 package se.lohnn.canieat.dataservice
 
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.GenericTypeIndicator
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import se.lohnn.canieat.product.Product
 import se.lohnn.canieat.product.temp.ProductFactory
 
@@ -9,6 +15,16 @@ class DataService private constructor() {
         val instance: DataService by lazy {
             DataService()
         }
+
+        //Image UUID, path to file
+        private val imageMap = mutableMapOf<String, StorageReference>()
+
+        fun getImageStorageRef(imageUUID: String?): StorageReference? {
+            if (imageUUID == null) {
+                return null
+            }
+            return imageMap[imageUUID]
+        }
     }
 
     val database: FirebaseDatabase by lazy {
@@ -16,7 +32,7 @@ class DataService private constructor() {
     }
 
     init {
-        database.setPersistenceEnabled(true)
+        database.setPersistenceEnabled(false)
     }
 
     fun getProduct(barcodeValue: String, function: (Product) -> Unit) {
@@ -28,10 +44,14 @@ class DataService private constructor() {
                 function.invoke(randomProduct)
             } else {
                 function.invoke(product)
+                imageMap[product.imageUUID] = FirebaseStorage.getInstance()
+                        .getReferenceFromUrl("gs://can-i-eat-this-ca957.appspot.com")
+                        .child("canieatthis")
+                        .child("images")
+                        .child(product.imageUUID + ".jpg")
             }
         }
     }
-
 
     fun saveProduct(barcode: String, product: Product) {
         databaseSave("products/$barcode", product)
