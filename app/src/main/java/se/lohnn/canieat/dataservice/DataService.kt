@@ -59,7 +59,23 @@ class DataService private constructor() {
     }
 
     fun saveProduct(barcode: String, product: Product) {
+        if (product.imagePath != null) {
+            product.imagePath = uploadImage(product.imagePath!!)
+        }
         databaseSave("products/$barcode", product)
+    }
+
+    private fun uploadImage(imagePath: String): String? {
+        val file = Uri.fromFile(File(imagePath.substring(7)))
+        val uuid = UUID.randomUUID().toString()
+        getImageStorageRef(uuid)?.putFile(file)
+                ?.addOnProgressListener { taskSnapshot ->
+                    val progress = (100.0 * taskSnapshot.bytesTransferred) / taskSnapshot.totalByteCount
+                    Log.d("Upload", "Upload progress: $progress")
+                }
+                ?.addOnSuccessListener { }
+                ?.addOnFailureListener { }
+        return uuid
     }
 
     private fun databaseSave(databasePoint: String, obj: Any) {
