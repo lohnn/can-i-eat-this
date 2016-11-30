@@ -6,18 +6,27 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import se.lohnn.canieat.dataservice.DataService;
 
 public class ImageBindingUtils {
     @BindingAdapter({"bind:imageUUID", "bind:error"})
     public static void loadImage(ImageView view, String imageUUID, Drawable error) {
-        Glide.with(view.getContext())
-                .using(new FirebaseImageLoader())
-                .load(DataService.Companion.getImageStorageRef(imageUUID))
-                .error(error)
-                .into(view);
+        if (imageUUID == null) {
+            return;
+        }
+        if (imageUUID.startsWith("file://")) {
+            String substring = imageUUID.substring(7);
+            Glide.with(view.getContext())
+                    .load(substring)
+                    .error(error)
+                    .into(view);
+        } else {
+            Glide.with(view.getContext())
+                    .using(new FirebaseImageLoader())
+                    .load(DataService.Companion.getImageStorageRef(imageUUID))
+                    .error(error)
+                    .into(view);
+        }
     }
 }

@@ -44,7 +44,7 @@ class EditProductActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK && currentPhotoPath != null) {
             val product = binding.product
-//            product.imageURL = currentPhotoPath!!.absolutePath
+            product.imageUUID = "file://${currentPhotoPath!!.absolutePath}"
             binding.product = product
         }
     }
