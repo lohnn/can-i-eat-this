@@ -10,13 +10,13 @@ import com.firebase.ui.storage.images.FirebaseImageLoader;
 import se.lohnn.canieat.dataservice.DataService;
 
 public class ImageBindingUtils {
-    @BindingAdapter({"bind:imageUUID", "bind:error"})
-    public static void loadImage(ImageView view, String imageUUID, Drawable error) {
-        if (imageUUID == null) {
+    @BindingAdapter({"bind:imagePath", "bind:error"})
+    public static void loadImage(ImageView view, String imagePath, Drawable error) {
+        if (imagePath == null) {
             return;
         }
-        if (imageUUID.startsWith("file://")) {
-            String substring = imageUUID.substring(7);
+        if (imagePath.startsWith("file://")) {
+            String substring = imagePath.substring(7);
             Glide.with(view.getContext())
                     .load(substring)
                     .error(error)
@@ -24,7 +24,7 @@ public class ImageBindingUtils {
         } else {
             Glide.with(view.getContext())
                     .using(new FirebaseImageLoader())
-                    .load(DataService.Companion.getImageStorageRef(imageUUID))
+                    .load(DataService.Companion.getImageStorageRef(imagePath))
                     .error(error)
                     .into(view);
         }

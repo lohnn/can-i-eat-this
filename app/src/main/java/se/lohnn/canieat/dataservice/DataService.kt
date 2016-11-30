@@ -1,5 +1,7 @@
 package se.lohnn.canieat.dataservice
 
+import android.net.Uri
+import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -9,6 +11,8 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import se.lohnn.canieat.product.Product
 import se.lohnn.canieat.product.temp.ProductFactory
+import java.io.File
+import java.util.UUID
 
 class DataService private constructor() {
     companion object {
@@ -19,11 +23,17 @@ class DataService private constructor() {
         //Image UUID, path to file
         private val imageMap = mutableMapOf<String, StorageReference>()
 
-        fun getImageStorageRef(imageUUID: String?): StorageReference? {
-            if (imageUUID == null) {
+        fun getImageStorageRef(imagePath: String?): StorageReference? {
+            if (imagePath == null) {
                 return null
             }
-            return imageMap[imageUUID]
+
+            //TODO: Lazy
+            return FirebaseStorage.getInstance()
+                    .getReferenceFromUrl("gs://can-i-eat-this-ca957.appspot.com")
+                    .child("canieatthis")
+                    .child("images")
+                    .child(imagePath + ".jpg")
         }
     }
 
@@ -44,11 +54,6 @@ class DataService private constructor() {
                 function.invoke(randomProduct)
             } else {
                 function.invoke(product)
-                imageMap[product.imageUUID] = FirebaseStorage.getInstance()
-                        .getReferenceFromUrl("gs://can-i-eat-this-ca957.appspot.com")
-                        .child("canieatthis")
-                        .child("images")
-                        .child(product.imageUUID + ".jpg")
             }
         }
     }

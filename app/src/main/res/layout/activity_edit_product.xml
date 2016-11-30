@@ -61,7 +61,7 @@
                 android:maxHeight="250dp"
                 android:transitionName="transition_image"
                 app:error='@{@drawable/barcode_scan}'
-                app:imageUUID='@{product.imageUUID}'
+                app:imagePath='@{product.imagePath}'
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
