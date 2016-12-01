@@ -66,6 +66,8 @@
                 tools:layout_constraintLeft_creator="1"
                 tools:layout_constraintRight_creator="1"
                 tools:layout_constraintTop_creator="1"
+                tools:layout_height="300dp"
+                tools:layout_width="0dp"
                 tools:src="@drawable/barcode_scan" />
 
             <ImageView
