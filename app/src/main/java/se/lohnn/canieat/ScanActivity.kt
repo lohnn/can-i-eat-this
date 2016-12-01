@@ -117,8 +117,8 @@ class ScanActivity : AppCompatActivity() {
         if (requestCode == EDIT_REQUEST_RESULT && resultCode == RESULT_OK) {
             val barcode = data!!.getStringExtra(EditProductActivity.KEY_UUID)
             val product = data.getSerializableExtra(EditProductActivity.KEY_PRODUCT) as Product
-            DataService.instance.saveProduct(barcode, product)
             setCurrentProduct(barcode, product)
+            DataService.instance.saveProduct(applicationContext, barcode, product)
         }
     }
 
