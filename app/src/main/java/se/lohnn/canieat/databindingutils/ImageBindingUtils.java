@@ -20,12 +20,16 @@ public class ImageBindingUtils {
             Glide.with(view.getContext())
                     .load(substring)
                     .error(error)
+//                    .override(1200, 1200)
+//                    .fitCenter()
                     .into(view);
         } else {
             Glide.with(view.getContext())
                     .using(new FirebaseImageLoader())
                     .load(DataService.Companion.getImageStorageRef(imagePath))
                     .error(error)
+//                    .override(1200, 1200)
+//                    .fitCenter()
                     .into(view);
         }
     }
